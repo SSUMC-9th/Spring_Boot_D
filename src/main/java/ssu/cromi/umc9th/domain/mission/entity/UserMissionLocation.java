@@ -9,7 +9,7 @@ import ssu.cromi.umc9th.domain.user.entity.User;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "next_mission_location")
+@Table(name = "user_mission_location")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
