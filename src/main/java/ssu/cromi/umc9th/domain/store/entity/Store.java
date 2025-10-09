@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-
 @Table(name = "store_table")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
