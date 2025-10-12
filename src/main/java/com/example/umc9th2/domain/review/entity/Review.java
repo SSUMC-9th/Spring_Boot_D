@@ -15,7 +15,6 @@ import java.util.List;
 @Table(name = "review")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -22,12 +22,11 @@ import java.util.List;
 @EnableJpaAuditing
 @Table(name = "user")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class User {
-
+//BaseEntity 사용도 고려해볼 것
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;// PK(user_id)
@@ -67,7 +66,6 @@ public class User {
     연관관계
     mappedBy : 연관관계의 주인
      */
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserMission> userMissions = new ArrayList<>();//유저미션
 

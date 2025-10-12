@@ -7,7 +7,6 @@ import lombok.*;
 @Entity
 @Table(name = "term")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

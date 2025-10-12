@@ -16,7 +16,6 @@ import java.util.List;
 @Table(name = "mission")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

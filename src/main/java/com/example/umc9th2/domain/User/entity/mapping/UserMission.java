@@ -8,7 +8,6 @@ import lombok.*;
 @Entity
 @Table(name = "user_mission")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -18,6 +17,7 @@ public class UserMission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberMissionId;//PK
 
+    @Builder.Default//빌더를 사용할때 펄스가 자동으로 들어가게
     @Column(name = "isComplete", nullable = false)
     private Boolean isComplete = false;//성공여부
 

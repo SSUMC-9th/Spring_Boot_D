@@ -6,7 +6,6 @@ import lombok.*;
 @Entity
 @Table(name = "reply")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

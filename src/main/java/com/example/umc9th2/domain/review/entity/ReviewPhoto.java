@@ -6,7 +6,6 @@ import lombok.*;
 @Entity
 @Table(name = "review_photo")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
