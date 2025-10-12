@@ -51,7 +51,7 @@ public class User {
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;//전화번호(null)
 
-    @Column(name = "delete_At", nullable = false)//삭제일자(null)
+    @Column(name = "delete_At")
     private LocalDateTime deletedAt = LocalDateTime.now();
 
     @CreatedDate

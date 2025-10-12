@@ -11,8 +11,8 @@ import java.util.List;
 @Entity
 @Table(name = "food")
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class Food {
 
