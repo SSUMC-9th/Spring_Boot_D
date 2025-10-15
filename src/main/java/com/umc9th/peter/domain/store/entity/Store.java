@@ -6,7 +6,6 @@ import com.umc9th.peter.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +32,10 @@ public class Store extends BaseEntity {
     @JoinColumn(name = "owner_id")
     private Member owner;
 
-    @Column(name = "open_at", nullable = false)
-    private LocalTime openAt;
-
-    @Column(name = "close_at", nullable = false)
-    private LocalTime closeAt;
-
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Review> storeReviewList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<StoreOpenHour> storeOpenHourList = new ArrayList<>();
 
 }
