@@ -1,6 +1,9 @@
 package com.umc9th.peter.domain.member.repository;
 
 import com.umc9th.peter.domain.member.entity.mapping.MemberMission;
+import com.umc9th.peter.domain.member.enums.MissionStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemberMissionRepository extends JpaRepository<MemberMission, Long> {
+
+    Page<MemberMission> findByMemberIdAndStatus(Long memberId, MissionStatus status, Pageable pageable);
 
     @Modifying
     @Query("DELETE FROM MemberMission mm WHERE mm.member.id = :memberId")
