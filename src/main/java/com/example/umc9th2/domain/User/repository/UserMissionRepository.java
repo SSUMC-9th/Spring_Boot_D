@@ -12,7 +12,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMissionRepository extends JpaRepository<UserMission, Long> {
 
-    // ✅ 마이페이지 화면 : 성공한 미션 포인트 합계
+    // 마이페이지 화면 : 성공한 미션 포인트 합계
+    // 1. 미션 하나도 없으면 0점 처리
+    // 2. mission 테이블과 조인하여 point 조회 가능
+    // 3. 로그인한 사용기준 필터링
+    // 4. 성공한 미션만 집계
     @Query("""
         SELECT COALESCE(SUM(m.point), 0)
         FROM UserMission um
@@ -22,7 +26,11 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
     """)
     Long sumSuccessPointsByUserId(@Param("userId") Long userId);
 
-    // ✅ 내가 진행 중 / 완료한 미션 목록 조회 (페이징)
+    // 내가 진행 중 / 완료한 미션 목록 조회 (페이징)
+    // 1. 필요한 데이터만 UsermissionDto에 담기
+    // 2. mission, store 테이블과 조인하여 정보 가져오기
+    // 3. 로그인한 사용자 기준 조회
+    // 4. 최근 생성된 미션부터 정렬
     @Query("""
         SELECT new com.example.umc9th2.domain.mission.dto.UserMissionDto(
             um.memberMissionId,
