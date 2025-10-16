@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import ssu.cromi.umc9th.domain.mission.enums.MissionStatus;
+import ssu.cromi.umc9th.domain.store.entity.Store;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,6 +41,10 @@ public class Mission {
 
     @Column(nullable = false, length = 255)
     private String location;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

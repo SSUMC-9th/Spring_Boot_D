@@ -34,7 +34,7 @@ public class UserMission {
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private LocalDateTime startedAt;
+    private LocalDateTime createdAt;
 
     @Column
     private LocalDateTime completedAt;
