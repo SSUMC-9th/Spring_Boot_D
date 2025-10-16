@@ -40,9 +40,6 @@ public class User {
     @Column(nullable = false, length = 255)
     private String address;
 
-    @Column(nullable = false, length = 255)
-    private String job;
-
     @Column(nullable = false, length = 255, unique = true)
     private String email;
 
