@@ -31,6 +31,9 @@ public class Mission {
     @Column(nullable = false)
     private LocalDate deadline;//종료일자
 
+    @Column(nullable = false)
+    private int point;//종료일자
+
     @CreatedDate
     @Column(nullable = false)
     private LocalDateTime createdAt;//생성일자
@@ -48,4 +51,3 @@ public class Mission {
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL)
     private List<UserMission> userMissions = new ArrayList<>();
 }
-//머지 오류 수정중

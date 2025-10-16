@@ -6,4 +6,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+
+    // 리뷰 작성은 save() 메서드 자동 지원
+
+    // 특정 유저가 작성한 리뷰 개수 -> 마이페이지 화면에 사용
+    Long countByUserId(Long userId);
+    //추후 userservice에서 사용자정보, 미션 합계, 리뷰 개수를 가지고 마이페이지 dto 구성
 }
