@@ -33,9 +33,11 @@ public class Store extends BaseEntity {
     private Member owner;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Builder.Default
     private List<Review> storeReviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Builder.Default
     private List<StoreOpenHour> storeOpenHourList = new ArrayList<>();
 
 }

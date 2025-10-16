@@ -36,6 +36,7 @@ public class Mission extends BaseEntity {
     private LocalDateTime endAt;
 
     @OneToMany(mappedBy = "mission")
+    @Builder.Default
     private List<MissionDistrict> missionDistrictList = new ArrayList<>();
 
 }
