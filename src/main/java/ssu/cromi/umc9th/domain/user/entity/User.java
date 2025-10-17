@@ -27,6 +27,8 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(length = 255)
     private String nickname;
 
@@ -40,8 +42,6 @@ public class User {
     @Column(nullable = false, length = 255)
     private String address;
 
-    @Column(nullable = false, length = 255)
-    private String job;
 
     @Column(nullable = false, length = 255, unique = true)
     private String email;
