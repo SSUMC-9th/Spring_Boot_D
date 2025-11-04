@@ -12,6 +12,6 @@ public interface MemberSocialServiceRepository extends JpaRepository<MemberSocia
 
     @Modifying
     @Query("DELETE FROM MemberSocialService mss WHERE mss.member.id = :memberId")
-    void deleteByMemberId(@Param("memberId") long memberId);
+    void deleteByMemberId(@Param("memberId") Long memberId);
 
 }

@@ -12,6 +12,6 @@ public interface MemberTermRepository extends JpaRepository<MemberTerm, Long> {
 
     @Modifying
     @Query("DELETE FROM MemberTerm mt WHERE mt.member.id = :memberId")
-    void deleteByMemberId(@Param("memberId") long memberId);
+    void deleteByMemberId(@Param("memberId") Long memberId);
 
 }

@@ -20,6 +20,6 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
 
     @Modifying
     @Query("DELETE FROM MemberMission mm WHERE mm.member.id = :memberId")
-    void deleteByMemberId(@Param("memberId") long memberId);
+    void deleteByMemberId(@Param("memberId") Long memberId);
 
 }
