@@ -9,7 +9,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @Query("SELECT DISTINCT m FROM Member m LEFT JOIN FETCH m.memberMissionList WHERE m.id = :memberId")
+    @Query("SELECT DISTINCT mem FROM Member mem " +
+            "LEFT JOIN FETCH mem.memberMissionList mm " +
+            "LEFT JOIN FETCH mm.mission mis " +
+            "LEFT JOIN FETCH mis.store " +
+            "WHERE mem.id = :memberId")
     Member findByIdWithMemberMissionList(@Param("memberId") Long memberId);
 
 }

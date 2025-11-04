@@ -13,7 +13,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberMissionRepository extends JpaRepository<MemberMission, Long> {
 
-    Page<MemberMission> findByMemberIdAndStatus(Long memberId, MissionStatus status, Pageable pageable);
+    @Query("SELECT mm FROM MemberMission mm " +
+            "WHERE mm.member.id = :memberId " +
+            "AND mm.status = :status")
+    Page<MemberMission> findByMemberIdAndStatus(@Param("memberId") Long memberId, @Param("status") MissionStatus status, Pageable pageable);
 
     @Modifying
     @Query("DELETE FROM MemberMission mm WHERE mm.member.id = :memberId")
