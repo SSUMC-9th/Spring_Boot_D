@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,6 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
             "JOIN FETCH m.missionDistrictList md " +
             "WHERE md.district.id  = :districtId " +
             "AND :now BETWEEN m.beginAt AND m.endAt")
-    Page<Mission> findAvailableMissionsByDistrictId(Long districtId, LocalDateTime now, Pageable pageable);
+    Page<Mission> findAvailableMissionsByDistrictId(@Param("districtId") Long districtId, @Param("now") LocalDateTime now, Pageable pageable);
 
 }
