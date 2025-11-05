@@ -14,9 +14,14 @@ import java.time.LocalDateTime;
 public interface MissionRepository extends JpaRepository<Mission, Long> {
 
     @Query("SELECT DISTINCT m FROM Mission m " +
-            "JOIN FETCH m.missionDistrictList md " +
+            "JOIN m.missionDistrictList md " +
             "WHERE md.district.id  = :districtId " +
-            "AND :now BETWEEN m.beginAt AND m.endAt")
-    Page<Mission> findAvailableMissionsByDistrictId(@Param("districtId") Long districtId, @Param("now") LocalDateTime now, Pageable pageable);
+            "AND :now BETWEEN m.beginAt AND m.endAt " +
+            "AND m.id NOT IN (" +
+            "   SELECT mm.mission.id " +
+            "   FROM MemberMission mm " +
+            "   WHERE mm.member.id = :memberId" +
+            ")")
+    Page<Mission> findAvailableMissionsByDistrictId(@Param("memberId") Long memberId, @Param("districtId") Long districtId, @Param("now") LocalDateTime now, Pageable pageable);
 
 }

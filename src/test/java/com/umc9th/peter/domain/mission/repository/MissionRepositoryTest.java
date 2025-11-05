@@ -64,7 +64,7 @@ class MissionRepositoryTest {
         missionRepository.save(dodamMission2);
         missionRepository.save(dodamMission3);
 
-        Page<Mission> availableMissions = missionRepository.findAvailableMissionsByDistrictId(sangdoDistrict.getId(), now, PageRequest.of(0, 10));
+        Page<Mission> availableMissions = missionRepository.findAvailableMissionsByDistrictId(member.getId(), sangdoDistrict.getId(), now, PageRequest.of(0, 10));
         availableMissions.forEach(mission -> {
             assertThat(mission.getMissionDistrictList().stream()
                     .filter(missionDistrict -> missionDistrict.getDistrict().equals(sangdoDistrict))
