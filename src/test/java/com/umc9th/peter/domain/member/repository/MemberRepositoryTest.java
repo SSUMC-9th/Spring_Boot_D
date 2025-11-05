@@ -82,7 +82,7 @@ class MemberRepositoryTest {
         entityManager.flush();
         entityManager.clear();
 
-        Member member = memberRepository.findByIdWithMemberMissionList(member1.getId());
+        Member member = memberRepository.findByIdWithMemberMissionList(member1.getId()).orElseThrow();
         entityManager.detach(member);
 
         // Detach 되었으므로 fetch join 되지 않았다면 LazyInitializationException 발생

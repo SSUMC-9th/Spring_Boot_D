@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
@@ -14,6 +16,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "LEFT JOIN FETCH mm.mission mis " +
             "LEFT JOIN FETCH mis.store " +
             "WHERE mem.id = :memberId")
-    Member findByIdWithMemberMissionList(@Param("memberId") Long memberId);
+    Optional<Member> findByIdWithMemberMissionList(@Param("memberId") Long memberId);
 
 }
