@@ -1,5 +1,6 @@
 package com.umc9th.peter.domain.member.entity;
 
+import com.umc9th.peter.domain.member.entity.mapping.MemberDistrict;
 import com.umc9th.peter.domain.member.entity.mapping.MemberFoodCategory;
 import com.umc9th.peter.domain.member.entity.mapping.MemberMission;
 import com.umc9th.peter.domain.member.entity.mapping.MemberSocialService;
@@ -75,5 +76,9 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Builder.Default
     private List<MemberMission> memberMissionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Builder.Default
+    private List<MemberDistrict> memberDistrictList = new ArrayList<>();
 
 }
