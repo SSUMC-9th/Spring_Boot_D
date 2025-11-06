@@ -1,20 +1,16 @@
 package com.example.UMC9th.domain.user.entity;
 
 import com.example.UMC9th.domain.user.entity.mapping.UserFood;
-import com.example.UMC9th.domain.user.entity.mapping.UserMisson;
+import com.example.UMC9th.domain.user.entity.mapping.UserMission;
 import com.example.UMC9th.domain.user.entity.mapping.UserTerm;
 import com.example.UMC9th.domain.user.enums.Gender;
 import com.example.UMC9th.domain.store.enums.Address;
 import com.example.UMC9th.global.auth.enums.SocialType;
-import com.example.UMC9th.domain.user.enums.FoodCategory;
+import com.example.UMC9th.global.auth.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +21,7 @@ import java.util.List;
 @Getter
 @Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User extends BaseEntity{
 
     //사용자 아이디
     @Id
@@ -73,19 +69,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
-    //생성일자
-    @CreatedDate
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    //수정일자
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
-
-    //삭제일자
-    @Column(name = "deleted_at", nullable = false)
-    private LocalDateTime deletedAt = LocalDateTime.now();
 
 
     //연관관계
@@ -94,4 +77,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<UserTerm> userTermList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserMission> missionList = new ArrayList<>();
+
+    //연관관계 공부 한 번 더하기
 }
