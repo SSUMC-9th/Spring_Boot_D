@@ -12,6 +12,6 @@ public interface MemberFoodCategoryRepository extends JpaRepository<MemberFoodCa
 
     @Modifying
     @Query("DELETE FROM MemberFoodCategory mfc WHERE mfc.member.id = :memberId")
-    void deleteByMemberId(@Param("memberId") long memberId);
+    void deleteByMemberId(@Param("memberId") Long memberId);
 
 }

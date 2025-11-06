@@ -12,6 +12,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     @Modifying
     @Query("UPDATE Store s SET s.owner = null WHERE s.owner.id = :ownerId")
-    void clearOwnerByOwnerId(@Param("ownerId") long ownerId);
+    void clearOwnerByOwnerId(@Param("ownerId") Long ownerId);
 
 }

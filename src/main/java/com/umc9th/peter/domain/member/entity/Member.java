@@ -1,5 +1,6 @@
 package com.umc9th.peter.domain.member.entity;
 
+import com.umc9th.peter.domain.member.entity.mapping.MemberDistrict;
 import com.umc9th.peter.domain.member.entity.mapping.MemberFoodCategory;
 import com.umc9th.peter.domain.member.entity.mapping.MemberMission;
 import com.umc9th.peter.domain.member.entity.mapping.MemberSocialService;
@@ -44,7 +45,7 @@ public class Member extends BaseEntity {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "address_detail", nullable = false)
+    @Column(name = "address_detail")
     private String addressDetail;
 
     @Column(name = "point", nullable = false)
@@ -61,15 +62,23 @@ public class Member extends BaseEntity {
     private AccountStatus status = AccountStatus.ACTIVE;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Builder.Default
     private List<Review> memberReviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Builder.Default
     private List<MemberFoodCategory> memberFoodCategoryList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Builder.Default
     private List<MemberSocialService> memberSocialServiceList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Builder.Default
     private List<MemberMission> memberMissionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Builder.Default
+    private List<MemberDistrict> memberDistrictList = new ArrayList<>();
 
 }

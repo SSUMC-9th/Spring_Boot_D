@@ -33,6 +33,7 @@ public class District extends BaseEntity {
     private DistrictStatus status = DistrictStatus.ACTIVE;
 
     @OneToMany(mappedBy = "district")
+    @Builder.Default
     private List<MissionDistrict> districtMissionList = new ArrayList<>();
 
 }
