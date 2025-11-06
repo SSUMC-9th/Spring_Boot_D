@@ -1,6 +1,7 @@
 package com.umc9th.peter.domain.store.entity;
 
 import com.umc9th.peter.domain.member.entity.Member;
+import com.umc9th.peter.domain.mission.entity.District;
 import com.umc9th.peter.domain.review.entity.Review;
 import com.umc9th.peter.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -24,6 +25,9 @@ public class Store extends BaseEntity {
     @Column(name = "name", length = 64, nullable = false)
     private String name;
 
+    @Column(name = "address", length = 256, nullable = false)
+    private String address;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_category_id", nullable = false)
     private StoreCategory storeCategory;
@@ -31,6 +35,10 @@ public class Store extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private Member owner;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "district_id", nullable = false)
+    private District district;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Builder.Default

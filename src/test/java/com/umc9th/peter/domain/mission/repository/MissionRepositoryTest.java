@@ -50,11 +50,11 @@ class MissionRepositoryTest {
         StoreCategory koreanFood = StoreCategory.builder().name("한식").build();
         storeCategoryRepository.save(koreanFood);
 
-        Store dodamStore = Store.builder().name("도담식당").storeCategory(koreanFood).owner(owner).build();
-        storeRepository.save(dodamStore);
-
         District sangdoDistrict = District.builder().name("상도동").address("서울특별시 동작구 상도동").build();
         districtRepository.save(sangdoDistrict);
+
+        Store dodamStore = Store.builder().name("도담식당").address("서울시 동작구 상도로 369").storeCategory(koreanFood).owner(owner).district(sangdoDistrict).build();
+        storeRepository.save(dodamStore);
 
         LocalDateTime now = LocalDateTime.now();
         Mission dodamMission1 = Mission.builder().store(dodamStore).content("6,000원 이상의 식사").beginAt(now.minusDays(1)).endAt(now.plusDays(1)).build();
