@@ -16,17 +16,19 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
-    //리뷰 작성
-    public void createReview(Long storeId, Long userId, String description, int rating) {
+
+    // 리뷰 작성
+    public void createReview(Long storeId, Long userId, String description, Float rating) {
         Review review = Review.builder()
                 .store(storeRepository.getReferenceById(storeId))
                 .user(userRepository.getReferenceById(userId))
-                .reviewDescription(description)
-                .rating(rating)
+                .content(description)
+                .score(rating)
                 .createdAt(LocalDateTime.now())
                 .build();
 
         reviewRepository.save(review);
     }
 }
+
 
