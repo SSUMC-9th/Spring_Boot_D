@@ -2,12 +2,9 @@ package ssu.cromi.umc9th.domain.review.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import ssu.cromi.umc9th.domain.store.entity.Store;
 import ssu.cromi.umc9th.domain.user.entity.User;
-
-import java.time.LocalDateTime;
+import ssu.cromi.umc9th.global.entity.BaseEntity;
 
 @Entity
 @Table(name = "user_review")
@@ -15,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class UserReview {
+public class UserReview extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,14 +30,6 @@ public class UserReview {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String reviewText;
-
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
 
     @Column(columnDefinition = "TEXT")
     private String ownerComment;
