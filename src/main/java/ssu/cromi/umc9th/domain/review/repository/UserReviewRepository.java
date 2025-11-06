@@ -10,7 +10,7 @@ import ssu.cromi.umc9th.domain.user.entity.User;
 
 import java.time.LocalDateTime;
 
-public interface UserReviewRepository extends JpaRepository<UserReview, Long> {
+public interface UserReviewRepository extends JpaRepository<UserReview, Long>, UserReviewRepositoryCustom {
     @Modifying
     @Query("""
         INSERT INTO UserReview (user, store, score, reviewText, createdAt, updatedAt)
