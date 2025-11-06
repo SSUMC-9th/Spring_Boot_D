@@ -19,48 +19,46 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     /**
-     * 내가 작성한 리뷰 조회 (동적 필터링)
-     *
-     * 사용 예시:
-     * 1. 모든 리뷰 조회: GET /api/reviews/my?userId=1
-     * 2. 특정 가게 리뷰만: GET /api/reviews/my?userId=1&storeId=5
-     * 3. 5점 리뷰만: GET /api/reviews/my?userId=1&minScore=5&maxScore=5
-     * 4. 4점대 리뷰만: GET /api/reviews/my?userId=1&minScore=4&maxScore=4.99
-     * 5. 가게+별점 조합: GET /api/reviews/my?userId=1&storeId=5&minScore=4&maxScore=5
+     * 내가 작성한 리뷰 조회
      */
     @GetMapping("/my")
     public ResponseEntity<Page<MyReviewResponseDto>> getMyReviews(
             @RequestParam Long userId,
             @RequestParam(required = false) Long storeId,
+            @RequestParam(required = false) Integer score,
             @RequestParam(required = false) Float minScore,
             @RequestParam(required = false) Float maxScore,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        ReviewFilterDto filter = ReviewFilterDto.builder()
-                .storeId(storeId)
-                .minScore(minScore)
-                .maxScore(maxScore)
-                .build();
+        ReviewFilterDto filter;
+        // score 파라미터가 있으면 자동 범위 설정
+        if (score != null) {
+            filter = ReviewFilterDto.of(storeId, score);
+        }
+        // 없으면 기존대로
+        else {
+            filter = ReviewFilterDto.builder()
+                    .storeId(storeId)
+                    .minScore(minScore)
+                    .maxScore(maxScore)
+                    .build();
+        }
 
         Page<MyReviewResponseDto> reviews = reviewService.getMyReviews(userId, filter, pageable);
         return ResponseEntity.ok(reviews);
     }
 
     /**
-     * 5점 리뷰만 조회 (편의 메서드)
+     * 특정 별점 리뷰만 조회
      */
-    @GetMapping("/my/five-star")
-    public ResponseEntity<Page<MyReviewResponseDto>> getMyFiveStarReviews(
+    @GetMapping("/my/star")
+    public ResponseEntity<Page<MyReviewResponseDto>> getMyReviewsByStar(
             @RequestParam Long userId,
+            @RequestParam Integer score,
             @RequestParam(required = false) Long storeId,
-            @PageableDefault(size = 10) Pageable pageable) {
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        ReviewFilterDto filter = ReviewFilterDto.builder()
-                .storeId(storeId)
-                .minScore(5.0f)
-                .maxScore(5.0f)
-                .build();
-
+        ReviewFilterDto filter = ReviewFilterDto.of(storeId, score);
         Page<MyReviewResponseDto> reviews = reviewService.getMyReviews(userId, filter, pageable);
         return ResponseEntity.ok(reviews);
     }

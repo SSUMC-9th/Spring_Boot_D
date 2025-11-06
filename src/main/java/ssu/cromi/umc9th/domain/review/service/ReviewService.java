@@ -16,9 +16,7 @@ public class ReviewService {
 
     private final UserReviewRepository userReviewRepository;
 
-    /**
-     * 내가 작성한 리뷰 조회 (동적 필터링)
-     */
+    //내가 작성한 리뷰 조회 (동적 필터링)
     public Page<MyReviewResponseDto> getMyReviews(Long userId, ReviewFilterDto filter, Pageable pageable) {
         return userReviewRepository.findMyReviewsWithFilter(userId, filter, pageable);
     }

@@ -14,25 +14,36 @@ public class ReviewFilterDto {
     private Float minScore;      // 최소 별점 (Optional)
     private Float maxScore;      // 최대 별점 (Optional)
 
-    // 별점 범위를 쉽게 설정하기 위한 헬퍼 메서드
-    public static ReviewFilterDto of5Star() {
-        return ReviewFilterDto.builder()
-                .minScore(5.0f)
-                .maxScore(5.0f)
-                .build();
+
+    public static ReviewFilterDto ofScore(Integer score) {
+        if (score == null || score < 1 || score > 5) {
+            return ReviewFilterDto.builder().build();
+        }
+
+        if (score == 5) {
+            // 5점은 정확히 5.0만
+            return ReviewFilterDto.builder()
+                    .minScore(5.0f)
+                    .maxScore(5.0f)
+                    .build();
+        } else {
+            // 1~4점 점수대
+            return ReviewFilterDto.builder()
+                    .minScore(score.floatValue())
+                    .maxScore(score + 0.99f)
+                    .build();
+        }
     }
 
-    public static ReviewFilterDto of4Star() {
+    /**
+     * 가게ID와 별점을 함께 필터링
+     */
+    public static ReviewFilterDto of(Long storeId, Integer score) {
+        ReviewFilterDto filter = ofScore(score);
         return ReviewFilterDto.builder()
-                .minScore(4.0f)
-                .maxScore(4.99f)
-                .build();
-    }
-
-    public static ReviewFilterDto of3Star() {
-        return ReviewFilterDto.builder()
-                .minScore(3.0f)
-                .maxScore(3.99f)
+                .storeId(storeId)
+                .minScore(filter.getMinScore())
+                .maxScore(filter.getMaxScore())
                 .build();
     }
 }
