@@ -1,17 +1,10 @@
 package com.example.UMC9th.domain.review.repository;
 
-
 import com.example.UMC9th.domain.review.entity.Review;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+public interface ReviewRepository
+        extends JpaRepository<Review, Long>, ReviewQueryDsl {
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
-
-    @Query("SELECT r FROM Review r JOIN FETCH r.user WHERE r.store.storeId = :storeId ORDER BY r.createdAt DESC")
-    List<Review> findReviewsByStoreId(@Param("storeId") Long storeId);
+    Long countByUser_UserId(Long userId);
 }

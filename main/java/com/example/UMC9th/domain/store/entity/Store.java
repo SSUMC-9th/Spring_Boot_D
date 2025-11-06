@@ -38,9 +38,11 @@ public class Store {
     @Enumerated(EnumType.STRING)
     private FoodCategory storeCategory;//open,closed
 
+    @Builder.Default
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Mission> missionList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Review> reviewList = new ArrayList<>();
 

@@ -23,6 +23,7 @@ public class Location {
     @Enumerated(EnumType.STRING)
     private Address locationName;
 
+    @Builder.Default
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     private List<Store> storeList = new ArrayList<>();
 }
