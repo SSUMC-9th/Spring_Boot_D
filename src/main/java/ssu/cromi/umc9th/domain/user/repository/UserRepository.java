@@ -4,8 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ssu.cromi.umc9th.domain.user.entity.User;
-
-import java.util.List;
+import ssu.cromi.umc9th.domain.user.dto.UserProfileDto;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     // 이메일 조회 시 fetch join 추가
@@ -23,5 +22,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
         FROM User u
         WHERE u.id = :userId
         """)
-    List<User> findbyId(@Param("userId") Long userId);
+    UserProfileDto findbyId(@Param("userId") Long userId);
 }
