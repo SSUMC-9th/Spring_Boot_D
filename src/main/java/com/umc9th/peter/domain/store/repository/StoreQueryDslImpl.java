@@ -20,9 +20,10 @@ public class StoreQueryDslImpl implements StoreQueryDsl {
 
     private final JPAQueryFactory queryFactory;
 
+    private final QStore store = QStore.store;
+
     @Override
     public List<Store> searchStoresByConditions(StoreSearchCondition conditions) {
-        QStore store = QStore.store;
 
         JPAQuery<Store> query = queryFactory.selectFrom(store);
 

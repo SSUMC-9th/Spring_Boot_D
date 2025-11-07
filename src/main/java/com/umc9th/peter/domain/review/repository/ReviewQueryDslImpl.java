@@ -16,9 +16,10 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
 
     private final JPAQueryFactory queryFactory;
 
+    private final QReview review = QReview.review;
+
     @Override
     public List<Review> searchReviewsByConditions(ReviewSearchCondition conditions) {
-        QReview review = QReview.review;
 
         BooleanBuilder builder = new BooleanBuilder();
         if (conditions.memberId() != null) {
