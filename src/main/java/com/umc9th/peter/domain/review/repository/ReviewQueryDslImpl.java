@@ -33,6 +33,8 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
 
         return queryFactory
                 .selectFrom(review)
+                .leftJoin(review.author).fetchJoin()
+                .leftJoin(review.store).fetchJoin()
                 .leftJoin(review.answer).fetchJoin()
                 .where(builder)
                 .fetch();
