@@ -9,10 +9,14 @@ import com.umc9th.peter.domain.store.entity.QStore;
 import com.umc9th.peter.domain.store.entity.Store;
 import com.umc9th.peter.domain.store.enums.StoreSearchOrder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,9 +27,10 @@ public class StoreQueryDslImpl implements StoreQueryDsl {
     private final QStore store = QStore.store;
 
     @Override
-    public List<Store> searchStoresByConditions(StoreSearchCondition conditions) {
+    public Page<Store> searchStoresByConditions(StoreSearchCondition conditions) {
 
-        JPAQuery<Store> query = queryFactory.selectFrom(store);
+        JPAQuery<Store> contentQuery = queryFactory.selectFrom(store);
+        JPAQuery<Long> countQuery = queryFactory.select(store.count()).from(store);
 
         BooleanBuilder builder = new BooleanBuilder();
         if (conditions.districtId() != null) {
@@ -38,7 +43,8 @@ public class StoreQueryDslImpl implements StoreQueryDsl {
             }
             builder.and(subBuilder);
         }
-        query.where(builder);
+        contentQuery.where(builder);
+        countQuery.where(builder);
 
         if (conditions.order() != null) {
             List<OrderSpecifier<?>> orders = new ArrayList<>();
@@ -50,13 +56,17 @@ public class StoreQueryDslImpl implements StoreQueryDsl {
             } else {
                 throw new IllegalStateException("Invalid order");
             }
-            query.orderBy(orders.toArray(OrderSpecifier<?>[]::new));
+            contentQuery.orderBy(orders.toArray(OrderSpecifier<?>[]::new));
         }
 
         if (conditions.pageable() != null) {
-            query.offset(conditions.pageable().getOffset()).limit(conditions.pageable().getPageSize());
+            contentQuery.offset(conditions.pageable().getOffset()).limit(conditions.pageable().getPageSize());
         }
 
-        return query.fetch();
+        List<Store> content = contentQuery.fetch();
+        Pageable pageable = Optional.ofNullable(conditions.pageable()).orElse(Pageable.unpaged());
+        long count = Optional.ofNullable(countQuery.fetchOne()).orElse(0L);
+
+        return new PageImpl<>(content, pageable, count);
     }
 }
