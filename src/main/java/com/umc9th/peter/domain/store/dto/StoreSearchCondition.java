@@ -5,5 +5,11 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public record StoreSearchCondition(Long districtId, List<String> nameList, StoreSearchOrder order, Pageable pageable) {
+public record StoreSearchCondition(
+        Long districtId,
+        List<String> nameList,
+        StoreSearchOrder order,
+        Pageable pageable
+) {
+
 }

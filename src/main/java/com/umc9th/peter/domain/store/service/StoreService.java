@@ -21,10 +21,17 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
 
-    public List<StoreResponse> getStores(Long districtId, String keywords, StoreSearchOrder order, Pageable pageable) {
+    public List<StoreResponse> getStores(
+            Long districtId,
+            String keywords,
+            StoreSearchOrder order,
+            Pageable pageable
+    ) {
         List<String> nameList = Arrays.stream(Optional.ofNullable(keywords).orElse("").trim().split("\\s+")).toList();
         StoreSearchCondition condition = new StoreSearchCondition(districtId, nameList, order, pageable);
+
         List<Store> stores = storeRepository.searchStoresByConditions(condition);
+
         return stores.stream().map(StoreResponse::fromEntity).toList();
     }
 

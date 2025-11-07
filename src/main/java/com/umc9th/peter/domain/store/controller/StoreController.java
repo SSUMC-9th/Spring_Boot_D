@@ -20,8 +20,12 @@ public class StoreController {
     private final StoreService storeService;
 
     @GetMapping
-    public List<StoreResponse> getStores(@RequestParam(required = false) Long districtId, @RequestParam(required = false) String keywords,
-                                         @RequestParam(required = false) StoreSearchOrder order, Pageable pageable) {
+    public List<StoreResponse> getStores(
+            @RequestParam(required = false) Long districtId,
+            @RequestParam(required = false) String keywords,
+            @RequestParam(required = false) StoreSearchOrder order,
+            Pageable pageable
+    ) {
         return storeService.getStores(districtId, keywords, order, pageable);
     }
 

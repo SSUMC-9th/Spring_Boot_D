@@ -18,7 +18,10 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping
-    public List<ReviewResponse> getReviews(@RequestParam(required = false) Long storeId, @RequestParam(required = false) Integer star) {
+    public List<ReviewResponse> getReviews(
+            @RequestParam(required = false) Long storeId,
+            @RequestParam(required = false) Integer star
+    ) {
         return reviewService.getReviews(null, storeId, star);  // TODO: 인증 기능 구현되면 토큰에서 memberId 파싱해서 사용 (멤버별 리뷰 조회 불가)
     }
 

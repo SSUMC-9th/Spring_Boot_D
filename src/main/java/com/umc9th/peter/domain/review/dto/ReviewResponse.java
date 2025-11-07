@@ -6,8 +6,16 @@ import com.umc9th.peter.domain.store.dto.StoreResponse;
 
 import java.time.LocalDateTime;
 
-public record ReviewResponse(Long id, String author, Integer star, String content, StoreResponse store,
-                             LocalDateTime createdAt, LocalDateTime updatedAt, AnswerResponse answer) {
+public record ReviewResponse(
+        Long id,
+        String author,
+        Integer star,
+        String content,
+        StoreResponse store,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
+        AnswerResponse answer
+) {
 
     public static ReviewResponse fromEntity(Review review) {
         Answer answer = review.getAnswer();
