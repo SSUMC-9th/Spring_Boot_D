@@ -2,7 +2,6 @@ package ssu.cromi.umc9th.domain.review.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
-
 import java.time.LocalDateTime;
 
 @Getter

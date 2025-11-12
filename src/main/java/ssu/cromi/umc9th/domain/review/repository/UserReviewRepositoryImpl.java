@@ -18,7 +18,6 @@ import static ssu.cromi.umc9th.domain.store.entity.QStore.store;
 
 @RequiredArgsConstructor
 public class UserReviewRepositoryImpl implements UserReviewRepositoryCustom {
-
     private final JPAQueryFactory queryFactory;
 
     @Override
