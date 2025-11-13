@@ -33,4 +33,9 @@ public class TestController {
         return ApiResponse.onSuccess(code, new TestResponse.Exception("This is Exception Test!"));
     }
 
+    @GetMapping("/notification")
+    public ApiResponse<TestResponse.Exception> exceptionNotification() throws Exception {
+        throw new Exception("Exception notification test!");
+    }
+
 }
