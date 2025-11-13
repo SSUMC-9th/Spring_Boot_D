@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StoreRepository extends JpaRepository<Store, Long> {
+public interface StoreRepository extends JpaRepository<Store, Long>, StoreQueryDsl {
 
     @Modifying
     @Query("UPDATE Store s SET s.owner = null WHERE s.owner.id = :ownerId")
