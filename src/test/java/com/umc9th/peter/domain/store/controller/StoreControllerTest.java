@@ -61,27 +61,27 @@ class StoreControllerTest {
 
         mockMvc.perform(get("/stores"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.length()").value(6));
+                .andExpect(jsonPath("$.result.content.length()").value(6));
 
         mockMvc.perform(get("/stores")
                         .param("districtId", String.valueOf(sangdoDistrict.getId())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.length()").value(3));
+                .andExpect(jsonPath("$.result.content.length()").value(3));
 
         mockMvc.perform(get("/stores")
                         .param("keywords", "상도"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.length()").value(2));
+                .andExpect(jsonPath("$.result.content.length()").value(2));
 
         mockMvc.perform(get("/stores")
                         .param("keywords", "상도 흑석"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.length()").value(4));
+                .andExpect(jsonPath("$.result.content.length()").value(4));
 
         mockMvc.perform(get("/stores")
                         .param("size", "2"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.length()").value(2))
-                .andExpect(jsonPath("$.total").value(6));
+                .andExpect(jsonPath("$.result.content.length()").value(2))
+                .andExpect(jsonPath("$.result.total").value(6));
     }
 }
