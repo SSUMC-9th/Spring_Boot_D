@@ -2,9 +2,9 @@ package ssu.cromi.umc9th.domain.mission.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import ssu.cromi.umc9th.domain.mission.enums.UserMissionStatus;
 import ssu.cromi.umc9th.domain.user.entity.User;
+import ssu.cromi.umc9th.global.entity.BaseEntity;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class UserMission {
+public class UserMission extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,10 +31,6 @@ public class UserMission {
     @Column(nullable = false, length = 20)
     @Builder.Default
     private UserMissionStatus status = UserMissionStatus.IN_PROGRESS;
-
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
 
     @Column
     private LocalDateTime completedAt;

@@ -2,10 +2,9 @@ package ssu.cromi.umc9th.domain.mission.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import ssu.cromi.umc9th.domain.mission.enums.MissionStatus;
 import ssu.cromi.umc9th.domain.store.entity.Store;
+import ssu.cromi.umc9th.global.entity.BaseEntity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Mission {
+public class Mission extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,14 +44,6 @@ public class Mission {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
-
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDate createdAt;
-
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private LocalDate updatedAt;
 
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

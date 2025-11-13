@@ -10,5 +10,5 @@ public class UserProfileDto {
     private String nickname;
     private String email;
     private String phone;
-    private Integer userPoint;
+    private Long userPoint;
 }
