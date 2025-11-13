@@ -41,4 +41,8 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)//FK
     private User user;//사용자 하나가 여러 리뷰 작성 가능
+
+    @OneToMany(mappedBy = "review")
+    private List<Reply> replies;
+
 }
