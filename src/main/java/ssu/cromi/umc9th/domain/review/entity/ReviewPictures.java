@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import ssu.cromi.umc9th.domain.store.entity.Store;
 import ssu.cromi.umc9th.domain.user.entity.User;
-import ssu.cromi.umc9th.global.entity.BaseEntity;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review_pictures")
@@ -12,7 +14,7 @@ import ssu.cromi.umc9th.global.entity.BaseEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class ReviewPictures extends BaseEntity {
+public class ReviewPictures {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,4 +29,12 @@ public class ReviewPictures extends BaseEntity {
 
     @Column(nullable = false, length = 255)
     private String imageUrl;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 }

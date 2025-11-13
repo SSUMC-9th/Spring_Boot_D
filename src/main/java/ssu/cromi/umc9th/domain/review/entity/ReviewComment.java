@@ -1,9 +1,11 @@
 package ssu.cromi.umc9th.domain.review.entity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import ssu.cromi.umc9th.domain.store.entity.Store;
 import ssu.cromi.umc9th.domain.user.entity.User;
-import ssu.cromi.umc9th.global.entity.BaseEntity;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review_comment")
@@ -11,7 +13,7 @@ import ssu.cromi.umc9th.global.entity.BaseEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class ReviewComment extends BaseEntity {
+public class ReviewComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,4 +29,12 @@ public class ReviewComment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_comment_id")
     private ReviewComment parentComment;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 }

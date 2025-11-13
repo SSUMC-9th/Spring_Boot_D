@@ -9,21 +9,18 @@ import ssu.cromi.umc9th.domain.mission.dto.MissionListDto;
 import ssu.cromi.umc9th.domain.mission.entity.Mission;
 
 public interface MissionRepository extends JpaRepository<Mission, Long> {
-    @Query("""
-        SELECT new ssu.cromi.umc9th.domain.mission.dto.MissionListDto(
-            m.id, s.storeName, s.address, m.content, m.point,
-            CASE
-                WHEN um.id IS NULL THEN 'mission start'
-                ELSE STR(um.status)
-            END
-        )
-        FROM Mission m
-        JOIN m.store s
-        LEFT JOIN m.userMissions um WITH um.user.id = :userId
-        WHERE s.address LIKE :address
-        AND (um.id IS NULL OR um.status = 'ASSIGNED')
-        ORDER BY m.createdAt DESC
-        """)
+    @Query("SELECT new ssu.cromi.umc9th.domain.mission.dto.MissionListDto(" +
+            "m.id, s.storeName, s.address, m.content, m.point, " +
+            "CASE " +
+            "WHEN um.id IS NULL THEN 'mission start' " +
+            "ELSE STR(um.status) " +
+            "END) " +
+            "FROM Mission m " +
+            "JOIN m.store s " +
+            "LEFT JOIN m.userMissions um WITH um.user.id = :userId " +
+            "WHERE s.address LIKE :address " +
+            "AND (um.id IS NULL OR um.status = 'ASSIGNED') " +
+            "ORDER BY m.createdAt DESC")
     Page<MissionListDto> findAvailableMissions(
             @Param("userId") Long userId,
             @Param("address") String address,

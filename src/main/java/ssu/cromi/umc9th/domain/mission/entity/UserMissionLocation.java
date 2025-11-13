@@ -2,8 +2,11 @@ package ssu.cromi.umc9th.domain.mission.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import ssu.cromi.umc9th.domain.user.entity.User;
-import ssu.cromi.umc9th.global.entity.BaseEntity;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_mission_location")
@@ -11,7 +14,7 @@ import ssu.cromi.umc9th.global.entity.BaseEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class UserMissionLocation extends BaseEntity {
+public class UserMissionLocation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,4 +28,12 @@ public class UserMissionLocation extends BaseEntity {
 
     @Column(nullable = false)
     private Integer locationCnt;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 }

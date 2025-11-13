@@ -2,6 +2,8 @@ package ssu.cromi.umc9th.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import ssu.cromi.umc9th.domain.food.entity.UserFood;
 import ssu.cromi.umc9th.domain.mission.entity.UserMission;
 import ssu.cromi.umc9th.domain.mission.entity.UserMissionLocation;
@@ -10,9 +12,9 @@ import ssu.cromi.umc9th.domain.review.entity.ReviewPictures;
 import ssu.cromi.umc9th.domain.review.entity.UserReview;
 import ssu.cromi.umc9th.domain.user.enums.Gender;
 import ssu.cromi.umc9th.domain.user.enums.UserStatus;
-import ssu.cromi.umc9th.global.entity.BaseEntity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class User extends BaseEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,6 +53,14 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 20)
     @Builder.Default
     private UserStatus status = UserStatus.ACTIVE;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     @Builder.Default
