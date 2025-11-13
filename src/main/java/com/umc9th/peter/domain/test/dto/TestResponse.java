@@ -8,4 +8,9 @@ public class TestResponse {
     ) {
     }
 
+    public record Exception(
+            String testing
+    ) {
+    }
+
 }
