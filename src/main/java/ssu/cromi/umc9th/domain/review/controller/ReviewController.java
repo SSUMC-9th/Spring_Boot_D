@@ -5,11 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssu.cromi.umc9th.domain.review.dto.MyReviewResponseDto;
 import ssu.cromi.umc9th.domain.review.dto.ReviewFilterDto;
 import ssu.cromi.umc9th.domain.review.service.ReviewService;
+import ssu.cromi.umc9th.global.apiPayload.ApiResponse;
+import ssu.cromi.umc9th.global.apiPayload.code.GeneralSuccessCode;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -22,7 +23,7 @@ public class ReviewController {
      * 내가 작성한 리뷰 조회
      */
     @GetMapping("/my")
-    public ResponseEntity<Page<MyReviewResponseDto>> getMyReviews(
+    public ApiResponse<Page<MyReviewResponseDto>> getMyReviews(
             @RequestParam Long userId,
             @RequestParam(required = false) Long storeId,
             @RequestParam(required = false) Integer score,
@@ -45,14 +46,15 @@ public class ReviewController {
         }
 
         Page<MyReviewResponseDto> reviews = reviewService.getMyReviews(userId, filter, pageable);
-        return ResponseEntity.ok(reviews);
+        GeneralSuccessCode code = GeneralSuccessCode.OK;
+        return ApiResponse.onSuccess(code, reviews);
     }
 
     /**
      * 특정 별점 리뷰만 조회
      */
     @GetMapping("/my/star")
-    public ResponseEntity<Page<MyReviewResponseDto>> getMyReviewsByStar(
+    public ApiResponse<Page<MyReviewResponseDto>> getMyReviewsByStar(
             @RequestParam Long userId,
             @RequestParam Integer score,
             @RequestParam(required = false) Long storeId,
@@ -60,6 +62,7 @@ public class ReviewController {
 
         ReviewFilterDto filter = ReviewFilterDto.of(storeId, score);
         Page<MyReviewResponseDto> reviews = reviewService.getMyReviews(userId, filter, pageable);
-        return ResponseEntity.ok(reviews);
+        GeneralSuccessCode code = GeneralSuccessCode.OK;
+        return ApiResponse.onSuccess(code, reviews);
     }
 }
