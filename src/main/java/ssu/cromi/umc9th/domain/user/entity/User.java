@@ -43,10 +43,10 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 255)
     private String specAddress;
 
-    @Column(nullable = false, length = 255, unique = true)
+    @Column(nullable = true, length = 255, unique = true)
     private String email;
 
-    @Column(length = 255)
+    @Column(nullable = true, length = 255)
     private String phone;
 
     @Enumerated(EnumType.STRING)
