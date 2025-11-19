@@ -17,10 +17,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("""
         SELECT new ssu.cromi.umc9th.domain.user.dto.UserProfileDto(
-            u.id, u.nickname, u.email, u.phone, u.userPoint
+            u.userId, u.nickname, u.email, u.phone, u.userPoint
         )
         FROM User u
-        WHERE u.id = :userId
+        WHERE u.userId = :userId
         """)
     UserProfileDto findbyId(@Param("userId") Long userId);
 }
