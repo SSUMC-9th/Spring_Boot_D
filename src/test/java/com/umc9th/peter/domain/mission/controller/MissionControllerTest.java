@@ -5,6 +5,7 @@ import com.umc9th.peter.domain.member.enums.AccountType;
 import com.umc9th.peter.domain.member.repository.MemberRepository;
 import com.umc9th.peter.domain.mission.entity.District;
 import com.umc9th.peter.domain.mission.entity.Mission;
+import com.umc9th.peter.domain.mission.exception.code.MissionErrorCode;
 import com.umc9th.peter.domain.mission.repository.DistrictRepository;
 import com.umc9th.peter.domain.mission.repository.MissionRepository;
 import com.umc9th.peter.domain.store.entity.Store;
@@ -55,10 +56,25 @@ class MissionControllerTest {
         StoreCategory koreanFood = storeCategoryRepository.save(StoreCategory.builder().name("한식").build());
         District sangdoDistrict = districtRepository.save(District.builder().name("상도동").address("서울특별시 동작구 상도동").build());
         Store dodamStore = storeRepository.save(Store.builder().name("도담식당").address("서울시 동작구 상도로 369").storeCategory(koreanFood).owner(owner).district(sangdoDistrict).build());
-        Mission mission = missionRepository.save(Mission.builder().store(dodamStore).content("10,000원 이상 식사 시 500 포인트").beginAt(LocalDateTime.now().minusDays(1)).endAt(LocalDateTime.now().plusDays(1)).build());
+        Mission normalMission = missionRepository.save(Mission.builder().store(dodamStore).content("10,000원 이상 식사 시 500 포인트").beginAt(LocalDateTime.now().minusDays(1)).endAt(LocalDateTime.now().plusDays(1)).build());
+        Mission closedMission = missionRepository.save(Mission.builder().store(dodamStore).content("20,000원 이상 식사 시 1000 포인트").beginAt(LocalDateTime.now().minusDays(10)).endAt(LocalDateTime.now().minusDays(1)).build());
+        Mission notOpenedMission = missionRepository.save(Mission.builder().store(dodamStore).content("20,000원 이상 식사 시 1000 포인트").beginAt(LocalDateTime.now().plusDays(1)).endAt(LocalDateTime.now().plusDays(10)).build());
 
-        mockMvc.perform(post("/missions/{missionId}/accept", mission.getId()))
+        mockMvc.perform(post("/missions/{missionId}/accept", normalMission.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result.id").isNumber());
+
+        mockMvc.perform(post("/missions/{missionId}/accept", closedMission.getId()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(MissionErrorCode.CLOSED.getMessage()));
+
+        mockMvc.perform(post("/missions/{missionId}/accept", notOpenedMission.getId()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(MissionErrorCode.NOT_OPENED.getMessage()));
+
+        mockMvc.perform(post("/missions/{missionId}/accept", -1))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value(MissionErrorCode.NOT_FOUND.getMessage()));
     }
+
 }
