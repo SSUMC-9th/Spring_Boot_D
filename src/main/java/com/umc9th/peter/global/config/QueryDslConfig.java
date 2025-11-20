@@ -1,4 +1,4 @@
-package com.umc9th.peter.config;
+package com.umc9th.peter.global.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
