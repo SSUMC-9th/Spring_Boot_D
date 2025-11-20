@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -34,6 +36,11 @@ public class MissionService {
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new MissionException(MissionErrorCode.NOT_FOUND));
 
+        if (mission.getEndAt().isBefore(LocalDateTime.now())) {
+            throw new MissionException(MissionErrorCode.CLOSED);
+        } else if (mission.getBeginAt().isAfter(LocalDateTime.now())) {
+            throw new MissionException(MissionErrorCode.NOT_OPENED);
+        }
 
         MemberMission memberMission = MemberMission.builder()
                 .member(member)
