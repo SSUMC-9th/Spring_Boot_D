@@ -68,23 +68,23 @@ class ReviewControllerTest {
 
         mockMvc.perform(get("/reviews"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(4));
+                .andExpect(jsonPath("$.result.length()").value(4));
 
         mockMvc.perform(get("/reviews")
                         .param("storeId", String.valueOf(dodamStore.getId())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2));
+                .andExpect(jsonPath("$.result.length()").value(2));
 
         mockMvc.perform(get("/reviews")
                         .param("star", "4"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2));
+                .andExpect(jsonPath("$.result.length()").value(2));
 
         mockMvc.perform(get("/reviews")
                         .param("storeId", String.valueOf(cauStore.getId()))
                         .param("star", "5"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1));
+                .andExpect(jsonPath("$.result.length()").value(1));
     }
 
 }

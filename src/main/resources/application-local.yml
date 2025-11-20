@@ -1,0 +1,3 @@
+logging:
+  level:
+    com.umc9th.peter: DEBUG

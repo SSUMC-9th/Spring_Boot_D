@@ -3,6 +3,8 @@ package com.umc9th.peter.domain.store.controller;
 import com.umc9th.peter.domain.store.dto.StoreSearchResponse;
 import com.umc9th.peter.domain.store.enums.StoreSearchOrder;
 import com.umc9th.peter.domain.store.service.StoreService;
+import com.umc9th.peter.global.api.ApiResponse;
+import com.umc9th.peter.global.api.code.GeneralSuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,13 +20,18 @@ public class StoreController {
     private final StoreService storeService;
 
     @GetMapping
-    public StoreSearchResponse getStores(
+    public ApiResponse<StoreSearchResponse> getStores(
             @RequestParam(required = false) Long districtId,
             @RequestParam(required = false) String keywords,
             @RequestParam(required = false) StoreSearchOrder order,
             Pageable pageable
     ) {
-        return storeService.getStores(districtId, keywords, order, pageable);
+        StoreSearchResponse stores = storeService.getStores(districtId, keywords, order, pageable);
+
+        return ApiResponse.onSuccess(
+                GeneralSuccessCode.OK,
+                stores
+        );
     }
 
 }

@@ -2,6 +2,8 @@ package com.umc9th.peter.domain.review.controller;
 
 import com.umc9th.peter.domain.review.dto.ReviewResponse;
 import com.umc9th.peter.domain.review.service.ReviewService;
+import com.umc9th.peter.global.api.ApiResponse;
+import com.umc9th.peter.global.api.code.GeneralSuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +20,17 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping
-    public List<ReviewResponse> getReviews(
+    public ApiResponse<List<ReviewResponse>> getReviews(
             @RequestParam(required = false) Long storeId,
             @RequestParam(required = false) Integer star
     ) {
-        return reviewService.getReviews(null, storeId, star);  // TODO: 인증 기능 구현되면 토큰에서 memberId 파싱해서 사용 (멤버별 리뷰 조회 불가)
+        // TODO: 인증 기능 구현되면 토큰에서 memberId 파싱해서 사용 (API를 통한 멤버별 리뷰 조회 불가)
+        List<ReviewResponse> reviews = reviewService.getReviews(null, storeId, star);
+
+        return ApiResponse.onSuccess(
+                GeneralSuccessCode.OK,
+                reviews
+        );
     }
 
 }
