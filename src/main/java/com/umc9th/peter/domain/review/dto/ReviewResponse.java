@@ -13,7 +13,7 @@ public class ReviewResponse {
             String author,
             Integer star,
             String content,
-            StoreResponse store,
+            StoreResponse.StoreDto store,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
             ReviewResponse.AnswerDto answer
@@ -27,7 +27,7 @@ public class ReviewResponse {
                     review.getAuthor().getNickname(),
                     review.getStar(),
                     review.getContent(),
-                    StoreResponse.fromEntity(review.getStore()),
+                    StoreResponse.StoreDto.fromEntity(review.getStore()),
                     review.getCreatedAt(),
                     review.getUpdatedAt(),
                     ReviewResponse.AnswerDto.fromEntity(answer)
