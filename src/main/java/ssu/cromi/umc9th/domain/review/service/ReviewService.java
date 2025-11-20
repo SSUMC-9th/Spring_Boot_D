@@ -10,9 +10,11 @@ import ssu.cromi.umc9th.domain.review.dto.MyReviewResponseDto;
 import ssu.cromi.umc9th.domain.review.dto.ReviewFilterDto;
 import ssu.cromi.umc9th.domain.review.dto.ReviewReqDTO;
 import ssu.cromi.umc9th.domain.review.dto.ReviewResDTO;
+import ssu.cromi.umc9th.domain.review.entity.ReviewPictures;
 import ssu.cromi.umc9th.domain.review.entity.UserReview;
 import ssu.cromi.umc9th.domain.review.exception.ReviewException.ReviewException;
 import ssu.cromi.umc9th.domain.review.exception.code.ReviewErrorCode;
+import ssu.cromi.umc9th.domain.review.repository.ReviewPicturesRepository;
 import ssu.cromi.umc9th.domain.review.repository.UserReviewRepository;
 import ssu.cromi.umc9th.domain.store.entity.Store;
 import ssu.cromi.umc9th.domain.store.exception.StoreException.StoreException;
@@ -23,12 +25,15 @@ import ssu.cromi.umc9th.domain.user.exception.UserException.UserException;
 import ssu.cromi.umc9th.domain.user.exception.code.UserErrorCode;
 import ssu.cromi.umc9th.domain.user.repository.UserRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ReviewService {
 
     private final UserReviewRepository userReviewRepository;
+    private final ReviewPicturesRepository reviewPicturesRepository;
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
 
@@ -57,7 +62,11 @@ public class ReviewService {
         UserReview review = ReviewConverter.toUserReview(dto, user, store);
         userReviewRepository.save(review);
 
+        // 리뷰 사진 저장
+        List<ReviewPictures> reviewPictures = ReviewConverter.toReviewPictures(dto.photoURLs(), user, store);
+        reviewPicturesRepository.saveAll(reviewPictures);
+
         // 응답 DTO 반환
-        return ReviewConverter.toCreateDTO(review);
+        return ReviewConverter.toCreateDTO(review, dto.photoURLs());
     }
 }
