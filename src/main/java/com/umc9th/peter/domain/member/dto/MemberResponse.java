@@ -8,7 +8,7 @@ public class MemberResponse {
 
     public record joinDto(
             Long memberId,
-            LocalDateTime createAt
+            LocalDateTime createdAt
     ) {
 
         public static joinDto fromEntity(Member member) {
