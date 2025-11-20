@@ -1,5 +1,6 @@
 package com.umc9th.peter.domain.review.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umc9th.peter.domain.member.entity.Member;
 import com.umc9th.peter.domain.member.enums.AccountType;
 import com.umc9th.peter.domain.member.repository.MemberRepository;
@@ -15,12 +16,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,6 +35,9 @@ class ReviewControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -87,4 +94,23 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$.result.length()").value(1));
     }
 
+    @Test
+    void writeReview() throws Exception {
+        Member author = memberRepository.save(Member.builder().name("김숭실").nickname("SS Kim").birthdate(LocalDate.of(2000, 1, 1)).address("서울특별시 동작구 상도로 369").addressDetail("세부 주소").type(AccountType.CUSTOMER).build());
+        Member owner = memberRepository.save(Member.builder().name("숭실대학교").nickname("숭실대").birthdate(LocalDate.of(1897, 10, 10)).address("서울특별시 동작구 상도로 369").type(AccountType.OWNER).build());
+        StoreCategory koreanFood = storeCategoryRepository.save(StoreCategory.builder().name("한식").build());
+        District sangdoDistrict = districtRepository.save(District.builder().name("상도동").address("서울특별시 동작구 상도동").build());
+        Store dodamStore = storeRepository.save(Store.builder().name("도담식당").address("서울시 동작구 상도로 369").storeCategory(koreanFood).owner(owner).district(sangdoDistrict).build());
+
+        Map<String, Object> body = Map.of(
+                "storeId", dodamStore.getId(),
+                "star", 5,
+                "content", "너무 맛있어요!"
+        );
+
+        mockMvc.perform(post("/reviews")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isCreated());
+    }
 }
