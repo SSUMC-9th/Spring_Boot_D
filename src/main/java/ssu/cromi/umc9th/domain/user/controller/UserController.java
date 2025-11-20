@@ -1,5 +1,6 @@
 package ssu.cromi.umc9th.domain.user.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ApiResponse<UserResDTO.JoinDTO> signUp(
-            @RequestBody UserReqDTO.JoinDTO dto
+            @RequestBody @Valid UserReqDTO.JoinDTO dto
     ){
         return ApiResponse.onSuccess(UserSuccessCode.FOUND, userCommandService.signup(dto));
     }
