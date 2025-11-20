@@ -23,7 +23,7 @@ public class ApiResponse<T> {
 
     @JsonProperty("result")
     private T result;
-
+//apiRespnose라는 말이 어노테이션이 겹쳐서 이름 수정하는게 좋을 것 같음
     // 성공한 경우 (result 포함)
     public static <T> ApiResponse<T> onSuccess(BaseSuccessCode code, T result) {
         return new ApiResponse<>(true, code.getCode(), code.getMessage(), result);
