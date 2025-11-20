@@ -39,6 +39,7 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+	// QueryDSL: OpenFeign
     // https://mvnrepository.com/artifact/io.github.openfeign.querydsl/querydsl-jpa
     // https://mvnrepository.com/artifact/io.github.openfeign.querydsl/querydsl-apt
     implementation "io.github.openfeign.querydsl:querydsl-jpa:${querydslVersion}"
@@ -48,6 +49,10 @@ dependencies {
     testAnnotationProcessor "io.github.openfeign.querydsl:querydsl-apt:${querydslVersion}:jpa"
     testAnnotationProcessor 'jakarta.persistence:jakarta.persistence-api'
     testAnnotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+
+	// Swagger
+	// https://springdoc.org/
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.14'
 }
 
 tasks.named('test') {
