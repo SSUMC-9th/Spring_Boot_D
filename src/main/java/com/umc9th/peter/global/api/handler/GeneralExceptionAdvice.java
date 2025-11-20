@@ -9,8 +9,12 @@ import com.umc9th.peter.global.webhook.service.WebhookService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.text.MessageFormat.format;
 
@@ -25,6 +29,17 @@ public class GeneralExceptionAdvice {
         BaseErrorCode code = e.getCode();
         return ResponseEntity.status(code.getStatus())
                 .body(ApiResponse.onFailure(code, code.getMessage()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleException(MethodArgumentNotValidException e) {
+        Map<String, String> errors = new HashMap<>();
+        e.getBindingResult().getFieldErrors()
+                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+
+        GeneralErrorCode code = GeneralErrorCode.VAILD_FAILURE;
+        return ResponseEntity.status(code.getStatus())
+                .body(ApiResponse.onFailure(code, errors));
     }
 
     @ExceptionHandler(Exception.class)

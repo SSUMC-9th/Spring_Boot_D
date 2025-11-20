@@ -39,6 +39,8 @@ public class MemberService {
 
         if (!dto.foodCategory().isEmpty()) {
             List<MemberFoodCategory> memberFoodCategoryList = dto.foodCategory().stream()
+                    // TODO: DTO에서 검증을 위해 repository를 조회하며 불필요하게 이중으로 접근하게 됨
+                    //       서비스 계층에서도 매핑을 위해 조회가 필요 (트랜잭션 내부에서 존재하는지 재검증 필요)
                     .map(id -> foodCategoryRepository.findById(id)
                             .orElseThrow(() -> new FoodException(FoodErrorCode.NOT_FOUND)))
                     .map(foodCategory -> MemberFoodCategory.builder()

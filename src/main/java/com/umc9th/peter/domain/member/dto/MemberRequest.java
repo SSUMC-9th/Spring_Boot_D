@@ -3,6 +3,7 @@ package com.umc9th.peter.domain.member.dto;
 import com.umc9th.peter.domain.member.entity.Member;
 import com.umc9th.peter.domain.member.enums.AccountType;
 import com.umc9th.peter.domain.member.enums.Gender;
+import com.umc9th.peter.global.annotation.ExistFoodCategories;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,7 +18,7 @@ public class MemberRequest {
             String address,
             String addressDetail,
             AccountType type,
-            List<Long> foodCategory
+            @ExistFoodCategories List<Long> foodCategory
     ) {
 
         public static Member toEntity(joinDto dto) {
