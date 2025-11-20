@@ -1,14 +1,13 @@
 package com.umc9th.peter.domain.review.controller;
 
+import com.umc9th.peter.domain.review.dto.ReviewRequest;
 import com.umc9th.peter.domain.review.dto.ReviewResponse;
 import com.umc9th.peter.domain.review.exception.code.ReviewSuccessCode;
 import com.umc9th.peter.domain.review.service.ReviewService;
 import com.umc9th.peter.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +30,19 @@ public class ReviewController {
                 ReviewSuccessCode.OK,
                 reviews
         );
+    }
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<ReviewResponse.ReviewDto>> writeReview(
+            @RequestBody ReviewRequest.ReviewDto dto
+    ) {
+        ReviewSuccessCode code = ReviewSuccessCode.CREATED;
+        return ResponseEntity.status(code.getStatus())
+                .body(ApiResponse.onSuccess(
+                        code,
+                        // TODO: 인증 기능 구현되면 토큰에서 memberId 파싱해서 사용
+                        reviewService.writeReview(1L, dto)
+                ));
     }
 
 }
