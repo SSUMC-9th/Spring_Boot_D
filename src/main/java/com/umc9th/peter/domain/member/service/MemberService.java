@@ -1,5 +1,11 @@
 package com.umc9th.peter.domain.member.service;
 
+import com.umc9th.peter.domain.member.dto.MemberRequest;
+import com.umc9th.peter.domain.member.dto.MemberResponse;
+import com.umc9th.peter.domain.member.entity.Member;
+import com.umc9th.peter.domain.member.entity.mapping.MemberFoodCategory;
+import com.umc9th.peter.domain.member.exception.FoodException;
+import com.umc9th.peter.domain.member.exception.code.FoodErrorCode;
 import com.umc9th.peter.domain.member.repository.*;
 import com.umc9th.peter.domain.review.repository.AnswerRepository;
 import com.umc9th.peter.domain.review.repository.ReviewRepository;
@@ -7,6 +13,8 @@ import com.umc9th.peter.domain.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +28,30 @@ public class MemberService {
     private final ReviewRepository reviewRepository;
     private final AnswerRepository answerRepository;
     private final StoreRepository storeRepository;
+    private final FoodCategoryRepository foodCategoryRepository;
+
+    @Transactional
+    public MemberResponse.joinDto signUp(
+            MemberRequest.joinDto dto
+    ) {
+        Member member = MemberRequest.joinDto.toEntity(dto);
+        memberRepository.save(member);
+
+        if (!dto.foodCategory().isEmpty()) {
+            List<MemberFoodCategory> memberFoodCategoryList = dto.foodCategory().stream()
+                    .map(id -> foodCategoryRepository.findById(id)
+                            .orElseThrow(() -> new FoodException(FoodErrorCode.NOT_FOUND)))
+                    .map(foodCategory -> MemberFoodCategory.builder()
+                            .member(member)
+                            .foodCategory(foodCategory)
+                            .build()
+                    )
+                    .toList();
+            memberFoodCategoryRepository.saveAll(memberFoodCategoryList);
+        }
+
+        return MemberResponse.joinDto.fromEntity(member);
+    }
 
     @Transactional
     public void deleteAccountByMemberId(long memberId) {
