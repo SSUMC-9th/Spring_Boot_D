@@ -2,7 +2,7 @@ package com.umc9th.peter.domain.review.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.umc9th.peter.domain.review.dto.ReviewSearchCondition;
+import com.umc9th.peter.domain.review.dto.ReviewRequest;
 import com.umc9th.peter.domain.review.entity.QReview;
 import com.umc9th.peter.domain.review.entity.Review;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
     private final QReview review = QReview.review;
 
     @Override
-    public List<Review> searchReviewsByConditions(ReviewSearchCondition conditions) {
+    public List<Review> searchReviewsByConditions(ReviewRequest.SearchConditionDto conditions) {
 
         BooleanBuilder builder = new BooleanBuilder();
         if (conditions.memberId() != null) {
