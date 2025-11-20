@@ -28,7 +28,7 @@ public class Review {
     private String content;//리뷰내용
 
     @Column(nullable = false)
-    private Float score;//별점
+    private Integer score;//별점
 
     @CreatedDate
     @Column(nullable = false)

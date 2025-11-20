@@ -1,7 +1,7 @@
 package com.example.umc9th2.domain.review.controller;
 
 import com.example.umc9th2.domain.review.dto.ReviewResponseDto;
-import com.example.umc9th2.domain.review.service.ReviewQueryService;
+import com.example.umc9th2.domain.review.service.query.ReviewQueryService;
 import com.example.umc9th2.global.apiPayload.ApiResponse;
 import com.example.umc9th2.global.apiPayload.code.GeneralSuccessCode;
 import lombok.RequiredArgsConstructor;

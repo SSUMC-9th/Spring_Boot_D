@@ -19,6 +19,8 @@ public enum GeneralSuccessCode implements BaseSuccessCode {
             "COMMON201_1",
             "리소스가 성공적으로 생성되었습니다."),
 
+    //미션
+    MISSION_CHALLENGE_SUCCESS(HttpStatus.CREATED, "MISSION_201", "미션 도전이 등록되었습니다."),
     //회원가입 로그인
     SIGNUP_SUCCESS(HttpStatus.CREATED,
             "USER201_1",

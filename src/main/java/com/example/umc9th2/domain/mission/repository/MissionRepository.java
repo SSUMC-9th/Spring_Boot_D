@@ -1,5 +1,6 @@
 package com.example.umc9th2.domain.mission.repository;
 
+import com.example.umc9th2.domain.User.entity.User;
 import com.example.umc9th2.domain.mission.dto.HomeMissionDto;
 import com.example.umc9th2.domain.mission.entity.Mission;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,5 +34,6 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
             @Param("region") String region,
             Pageable pageable
     );
+
 
 }
