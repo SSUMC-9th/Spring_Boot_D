@@ -10,9 +10,6 @@ import ssu.cromi.umc9th.domain.mission.entity.UserMission;
 import ssu.cromi.umc9th.domain.mission.enums.UserMissionStatus;
 
 public interface UserMissionRepository extends JpaRepository<UserMission, Long> {
-    // TODO: 추후 커서 기반 페이징으로 개선 고려
-    // 현재는 Page 기반 페이징을 사용하지만, 대용량 데이터 처리 시 성능 개선을 위해
-    // 커서 기반 페이징(Cursor-based Pagination) 도입을 검토할 수 있습니다.
     @Query("""
         SELECT new ssu.cromi.umc9th.domain.mission.dto.UserMissionDto(
             m.point, um.status, s.storeName, m.content
@@ -20,7 +17,7 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
         FROM UserMission um
         JOIN um.mission m
         JOIN m.store s
-        WHERE um.user.id = :userId
+        WHERE um.user.userId = :userId
         AND um.status = :status
         ORDER BY um.createdAt DESC
         """)
@@ -28,4 +25,16 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
             @Param("userId") Long userId,
             @Param("status") UserMissionStatus status,
             Pageable pageable);
+
+    // 사용자가 특정 미션에 이미 도전 중인지 확인
+    @Query("""
+        SELECT COUNT(um) > 0
+        FROM UserMission um
+        WHERE um.user.userId = :userId
+        AND um.mission.id = :missionId
+        AND um.status IN ('ASSIGNED', 'IN_PROGRESS')
+        """)
+    boolean existsActiveUserMission(
+            @Param("userId") Long userId,
+            @Param("missionId") Long missionId);
 }
