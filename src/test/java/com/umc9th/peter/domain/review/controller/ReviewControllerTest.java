@@ -111,6 +111,7 @@ class ReviewControllerTest {
         mockMvc.perform(post("/reviews")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(body)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.result.id").isNumber());
     }
 }
