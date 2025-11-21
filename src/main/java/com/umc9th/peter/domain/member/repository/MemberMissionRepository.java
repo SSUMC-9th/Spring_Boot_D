@@ -18,6 +18,8 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
             "AND mm.status = :status")
     Page<MemberMission> findByMemberIdAndStatus(@Param("memberId") Long memberId, @Param("status") MissionStatus status, Pageable pageable);
 
+    boolean existsByMemberIdAndMissionId(Long memberId, Long missionId);
+
     @Modifying
     @Query("DELETE FROM MemberMission mm WHERE mm.member.id = :memberId")
     void deleteByMemberId(@Param("memberId") Long memberId);

@@ -64,6 +64,10 @@ class MissionControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result.id").isNumber());
 
+        mockMvc.perform(post("/missions/{missionId}/accept", normalMission.getId()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(MissionErrorCode.ALREADY_ACCEPTED.getMessage()));
+
         mockMvc.perform(post("/missions/{missionId}/accept", closedMission.getId()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value(MissionErrorCode.CLOSED.getMessage()));

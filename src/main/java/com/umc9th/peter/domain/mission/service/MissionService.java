@@ -42,6 +42,10 @@ public class MissionService {
             throw new MissionException(MissionErrorCode.NOT_OPENED);
         }
 
+        if (memberMissionRepository.existsByMemberIdAndMissionId(memberId, missionId)) {
+            throw new MissionException(MissionErrorCode.ALREADY_ACCEPTED);
+        }
+
         MemberMission memberMission = MemberMission.builder()
                 .member(member)
                 .mission(mission)
