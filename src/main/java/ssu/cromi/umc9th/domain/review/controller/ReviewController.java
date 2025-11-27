@@ -1,5 +1,7 @@
 package ssu.cromi.umc9th.domain.review.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,17 +12,22 @@ import ssu.cromi.umc9th.domain.review.dto.MyReviewResponseDto;
 import ssu.cromi.umc9th.domain.review.dto.ReviewFilterDto;
 import ssu.cromi.umc9th.domain.review.dto.ReviewReqDTO;
 import ssu.cromi.umc9th.domain.review.dto.ReviewResDTO;
+import ssu.cromi.umc9th.domain.review.entity.UserReview;
 import ssu.cromi.umc9th.domain.review.exception.code.ReviewSuccessCode;
 import ssu.cromi.umc9th.domain.review.service.ReviewService;
+import ssu.cromi.umc9th.domain.review.service.query.ReviewQueryService;
 import ssu.cromi.umc9th.global.apiPayload.ApiResponse;
 import ssu.cromi.umc9th.global.apiPayload.code.GeneralSuccessCode;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/reviews")
 @RequiredArgsConstructor
-public class ReviewController {
+public class ReviewController{
 
     private final ReviewService reviewService;
+    private final ReviewQueryService reviewQueryService;
 
     /**
      * 가게에 리뷰 추가
@@ -77,5 +84,31 @@ public class ReviewController {
         Page<MyReviewResponseDto> reviews = reviewService.getMyReviews(userId, filter, pageable);
         GeneralSuccessCode code = GeneralSuccessCode.OK;
         return ApiResponse.onSuccess(code, reviews);
+    }
+
+    @Operation(
+            summary = "가게의 리뷰 목록 조회 API By Crom(개발중)",
+            description = "특정 가게의 리뷰를 모두 조회. 페이지네이션으로 제공"
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "실패")
+    })
+    @GetMapping("/reviews")
+    public ApiResponse<ReviewResDTO.ReviewPreViewListDTO> getReviews(
+            @RequestParam String storeName,
+            @RequestParam Integer page
+    ){
+
+        ReviewSuccessCode code = ReviewSuccessCode.FOUND;
+        return ApiResponse.onSuccess(code, reviewQueryService.findReview(storeName,page));
+    }
+
+    public List<UserReview> searchReview(
+            @RequestParam String filter,
+            @RequestParam String type
+    )throws Exception{
+        List<UserReview> result = reviewQueryService.searchReview(filter, type);
+        return result;
     }
 }

@@ -1,5 +1,7 @@
 package ssu.cromi.umc9th.domain.review.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +24,7 @@ public interface UserReviewRepository extends JpaRepository<UserReview, Long>, U
                       @Param("reviewText") String reviewText,
                       @Param("createdAt") LocalDateTime createdAt,
                       @Param("updatedAt") LocalDateTime updatedAt);
+
+    Page<UserReview> findAllByStore(Store store, PageRequest pageRequest);
+
 }
