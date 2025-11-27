@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import com.example.umc9th2.domain.User.entity.User;
+import com.example.umc9th2.domain.mission.entity.Mission;
+
 
 @Repository
 public interface UserMissionRepository extends JpaRepository<UserMission, Long> {
@@ -52,4 +55,8 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
             @Param("userId") Long userId,
             Pageable pageable
     );
+
+    boolean existsByUserAndMission(User user, Mission mission);
+
+
 }

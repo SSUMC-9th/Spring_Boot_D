@@ -14,7 +14,7 @@ public class ReviewResponseDto {
 
     private Long reviewId;        // 리뷰 ID
     private String content;       // 리뷰 내용
-    private Float score;          // 별점
+    private Integer score;          // 별점
     private String replyContent;  // 사장님 댓글 내용 (nullable)
 
 }

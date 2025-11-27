@@ -62,17 +62,27 @@ public class User {
     @Column(name = "update_At", nullable = false)//수정일자
     private LocalDateTime updatedAt;
 
+    @Column(name = "address", length = 255)
+    private String address;        // 기본 주소
+
+    @Column(name = "spec_address", length = 255)
+    private String specAddress;    // 상세 주소
+
     /*
     연관관계
     mappedBy : 연관관계의 주인
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserMission> userMissions = new ArrayList<>();//유저미션
+    @Builder.Default
+    private List<UserMission> userMissions = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserTerm> userTerms = new ArrayList<>();//유저약관
+    @Builder.Default
+    private List<UserTerm> userTerms = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserFood> userFoods = new ArrayList<>();//유저선호음식
+    @Builder.Default
+    private List<UserFood> userFoods = new ArrayList<>();
+
 
 }
