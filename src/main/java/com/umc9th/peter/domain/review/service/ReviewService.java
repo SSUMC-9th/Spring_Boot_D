@@ -4,6 +4,7 @@ import com.umc9th.peter.domain.member.entity.Member;
 import com.umc9th.peter.domain.member.exception.MemberException;
 import com.umc9th.peter.domain.member.exception.code.MemberErrorCode;
 import com.umc9th.peter.domain.member.repository.MemberRepository;
+import com.umc9th.peter.domain.review.converter.ReviewConverter;
 import com.umc9th.peter.domain.review.dto.ReviewRequest;
 import com.umc9th.peter.domain.review.dto.ReviewResponse;
 import com.umc9th.peter.domain.review.entity.Review;
@@ -13,10 +14,10 @@ import com.umc9th.peter.domain.store.exception.StoreException;
 import com.umc9th.peter.domain.store.exception.code.StoreErrorCode;
 import com.umc9th.peter.domain.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -27,16 +28,19 @@ public class ReviewService {
     private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
 
-    public List<ReviewResponse.ReviewDto> getReviews(
+    public ReviewResponse.ReviewListDto getReviews(
             Long memberId,
             Long storeId,
-            Integer star
+            Integer star,
+            Integer page,
+            Integer limit
     ) {
         ReviewRequest.SearchConditionDto condition = new ReviewRequest.SearchConditionDto(memberId, storeId, star);
+        PageRequest pageRequest = PageRequest.of(page - 1, limit);
 
-        List<Review> reviewList = reviewRepository.searchReviewsByConditions(condition);
+        Page<Review> reviews = reviewRepository.searchReviewsByConditions(condition, pageRequest);
 
-        return reviewList.stream().map(ReviewResponse.ReviewDto::fromEntity).toList();
+        return ReviewConverter.toReviewListDto(reviews);
     }
 
     public ReviewResponse.ReviewDto writeReview(
