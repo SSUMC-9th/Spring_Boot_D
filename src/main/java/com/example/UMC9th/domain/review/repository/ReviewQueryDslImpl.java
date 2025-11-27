@@ -1,6 +1,6 @@
 package com.example.UMC9th.domain.review.repository;
 
-import com.example.UMC9th.domain.review.dto.ReviewResponseDTO;
+import com.example.UMC9th.domain.review.dto.ReviewResDTO;
 import com.example.UMC9th.domain.review.entity.QReply;
 import com.example.UMC9th.domain.review.entity.QReview;
 import com.example.UMC9th.domain.store.entity.QStore;
@@ -20,7 +20,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
     private final EntityManager em;
 
     @Override
-    public List<ReviewResponseDTO> searchReviews(Long userId, String storeName, Float rating) {
+    public List<ReviewResDTO> searchReviews(Long userId, String storeName, Float rating) {
 
         // QueryFactory 생성
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
@@ -49,7 +49,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
         // 쿼리 실행 & DTO 매핑
         return queryFactory
                 .select(Projections.constructor(
-                        ReviewResponseDTO.class,
+                        ReviewResDTO.class,
                         review.reviewId,   // Long
                         review.reviewContent,    // String
                         review.reviewValue,      // Float
