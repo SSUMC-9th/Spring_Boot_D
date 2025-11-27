@@ -1,5 +1,7 @@
 package ssu.cromi.umc9th.domain.mission.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.cromi.umc9th.domain.mission.dto.MissionReqDTO;
@@ -25,5 +27,26 @@ public class MissionController {
         MissionResDTO.ChallengeDTO response = missionService.challengeMission(missionId, request);
 
         return ApiResponse.onSuccess(MissionSuccessCode.SUCCESS_CHALLENGED, response);
+    }
+
+    /**
+     * 특정 가게의 미션 목록 조회 (페이징 처리)
+     */
+    @Operation(
+            summary = "특정 가게의 미션 목록 조회 API",
+            description = "특정 가게의 미션을 페이징 처리하여 조회. 한 페이지에 10개씩 조회"
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 페이지 번호"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "가게를 찾을 수 없음")
+    })
+    @GetMapping("/stores/{storeName}")
+    public ApiResponse<MissionResDTO.StoreMissionListDTO> getStoreMissions(
+            @PathVariable String storeName,
+            @RequestParam(defaultValue = "1") Integer page
+    ) {
+        MissionResDTO.StoreMissionListDTO response = missionService.getStoreMissions(storeName, page);
+        return ApiResponse.onSuccess(MissionSuccessCode.FOUND, response);
     }
 }
