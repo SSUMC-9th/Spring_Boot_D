@@ -4,7 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.umc9th.peter.domain.store.dto.StoreSearchCondition;
+import com.umc9th.peter.domain.store.dto.StoreRequest;
 import com.umc9th.peter.domain.store.entity.QStore;
 import com.umc9th.peter.domain.store.entity.Store;
 import com.umc9th.peter.domain.store.enums.StoreSearchOrder;
@@ -27,7 +27,7 @@ public class StoreQueryDslImpl implements StoreQueryDsl {
     private final QStore store = QStore.store;
 
     @Override
-    public Page<Store> searchStoresByConditions(StoreSearchCondition conditions) {
+    public Page<Store> searchStoresByConditions(StoreRequest.SearchCondition conditions) {
 
         JPAQuery<Store> contentQuery = queryFactory.selectFrom(store);
         JPAQuery<Long> countQuery = queryFactory.select(store.count()).from(store);

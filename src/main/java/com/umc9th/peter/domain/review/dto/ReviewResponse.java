@@ -6,30 +6,55 @@ import com.umc9th.peter.domain.store.dto.StoreResponse;
 
 import java.time.LocalDateTime;
 
-public record ReviewResponse(
-        Long id,
-        String author,
-        Integer star,
-        String content,
-        StoreResponse store,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt,
-        AnswerResponse answer
-) {
+public class ReviewResponse {
 
-    public static ReviewResponse fromEntity(Review review) {
-        Answer answer = review.getAnswer();
+    public record ReviewDto(
+            Long id,
+            String author,
+            Integer star,
+            String content,
+            StoreResponse.StoreDto store,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt,
+            ReviewResponse.AnswerDto answer
+    ) {
 
-        return new ReviewResponse(
-                review.getId(),
-                review.getAuthor().getNickname(),
-                review.getStar(),
-                review.getContent(),
-                StoreResponse.fromEntity(review.getStore()),
-                review.getCreatedAt(),
-                review.getUpdatedAt(),
-                AnswerResponse.fromEntity(answer)
-        );
+        public static ReviewDto fromEntity(Review review) {
+            Answer answer = review.getAnswer();
+
+            return new ReviewDto(
+                    review.getId(),
+                    review.getAuthor().getNickname(),
+                    review.getStar(),
+                    review.getContent(),
+                    StoreResponse.StoreDto.fromEntity(review.getStore()),
+                    review.getCreatedAt(),
+                    review.getUpdatedAt(),
+                    ReviewResponse.AnswerDto.fromEntity(answer)
+            );
+        }
+
+    }
+
+    public record AnswerDto(
+            Long id,
+            String content,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
+
+        public static AnswerDto fromEntity(Answer answer) {
+            if (answer == null) {
+                return null;
+            }
+            return new AnswerDto(
+                    answer.getId(),
+                    answer.getContent(),
+                    answer.getCreatedAt(),
+                    answer.getUpdatedAt()
+            );
+        }
+
     }
 
 }

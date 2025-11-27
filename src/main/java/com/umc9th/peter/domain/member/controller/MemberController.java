@@ -1,13 +1,14 @@
 package com.umc9th.peter.domain.member.controller;
 
+import com.umc9th.peter.domain.member.dto.MemberRequest;
+import com.umc9th.peter.domain.member.dto.MemberResponse;
+import com.umc9th.peter.domain.member.exception.code.MemberSuccessCode;
 import com.umc9th.peter.domain.member.service.MemberService;
 import com.umc9th.peter.global.api.ApiResponse;
 import com.umc9th.peter.global.api.code.GeneralSuccessCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,6 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+
+    @PostMapping("/sign-up")
+    public ApiResponse<MemberResponse.joinDto> signUp(
+            @RequestBody @Valid MemberRequest.joinDto dto
+    ) {
+        return ApiResponse.onSuccess(
+                MemberSuccessCode.CREATED,
+                memberService.signUp(dto)
+        );
+    }
 
     @DeleteMapping("/{memberId}")
     public ApiResponse<Void> delete(

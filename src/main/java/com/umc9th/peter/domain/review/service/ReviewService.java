@@ -1,9 +1,17 @@
 package com.umc9th.peter.domain.review.service;
 
+import com.umc9th.peter.domain.member.entity.Member;
+import com.umc9th.peter.domain.member.exception.MemberException;
+import com.umc9th.peter.domain.member.exception.code.MemberErrorCode;
+import com.umc9th.peter.domain.member.repository.MemberRepository;
+import com.umc9th.peter.domain.review.dto.ReviewRequest;
 import com.umc9th.peter.domain.review.dto.ReviewResponse;
-import com.umc9th.peter.domain.review.dto.ReviewSearchCondition;
 import com.umc9th.peter.domain.review.entity.Review;
 import com.umc9th.peter.domain.review.repository.ReviewRepository;
+import com.umc9th.peter.domain.store.entity.Store;
+import com.umc9th.peter.domain.store.exception.StoreException;
+import com.umc9th.peter.domain.store.exception.code.StoreErrorCode;
+import com.umc9th.peter.domain.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +24,39 @@ import java.util.List;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final MemberRepository memberRepository;
+    private final StoreRepository storeRepository;
 
-    public List<ReviewResponse> getReviews(
+    public List<ReviewResponse.ReviewDto> getReviews(
             Long memberId,
             Long storeId,
             Integer star
     ) {
-        ReviewSearchCondition condition = new ReviewSearchCondition(memberId, storeId, star);
+        ReviewRequest.SearchConditionDto condition = new ReviewRequest.SearchConditionDto(memberId, storeId, star);
 
         List<Review> reviewList = reviewRepository.searchReviewsByConditions(condition);
 
-        return reviewList.stream().map(ReviewResponse::fromEntity).toList();
+        return reviewList.stream().map(ReviewResponse.ReviewDto::fromEntity).toList();
+    }
+
+    public ReviewResponse.ReviewDto writeReview(
+            Long memberId,
+            ReviewRequest.ReviewDto dto
+    ) {
+        Member author = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
+        Store store = storeRepository.findById(dto.storeId())
+                .orElseThrow(() -> new StoreException(StoreErrorCode.NOT_FOUND));
+
+        Review review = Review.builder()
+                .author(author)
+                .store(store)
+                .star(dto.star())
+                .content(dto.content())
+                .build();
+        reviewRepository.save(review);
+
+        return ReviewResponse.ReviewDto.fromEntity(review);
     }
 
 }
