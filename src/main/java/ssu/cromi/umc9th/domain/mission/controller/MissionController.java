@@ -49,4 +49,25 @@ public class MissionController {
         MissionResDTO.StoreMissionListDTO response = missionService.getStoreMissions(storeName, page);
         return ApiResponse.onSuccess(MissionSuccessCode.FOUND, response);
     }
+
+    /**
+     * 특정 유저가 진행중인 미션 목록 조회 (페이징 처리)
+     */
+    @Operation(
+            summary = "특정 유저가 진행중인 미션 목록 조회 API",
+            description = "특정 유저가 진행중인 미션을 페이징 처리하여 조회. 한 페이지에 10개씩 조회"
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 페이지 번호"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "유저를 찾을 수 없음")
+    })
+    @GetMapping("/users/{userId}/in-progress")
+    public ApiResponse<MissionResDTO.UserMissionListDTO> getUserInProgressMissions(
+            @PathVariable Long userId,
+            @RequestParam(defaultValue = "1") Integer page
+    ) {
+        MissionResDTO.UserMissionListDTO response = missionService.getUserInProgressMissions(userId, page);
+        return ApiResponse.onSuccess(MissionSuccessCode.FOUND, response);
+    }
 }

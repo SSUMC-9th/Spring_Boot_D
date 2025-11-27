@@ -10,6 +10,7 @@ import ssu.cromi.umc9th.domain.mission.dto.MissionReqDTO;
 import ssu.cromi.umc9th.domain.mission.dto.MissionResDTO;
 import ssu.cromi.umc9th.domain.mission.entity.Mission;
 import ssu.cromi.umc9th.domain.mission.entity.UserMission;
+import ssu.cromi.umc9th.domain.mission.enums.UserMissionStatus;
 import ssu.cromi.umc9th.domain.mission.exception.MissionException.MissionException;
 import ssu.cromi.umc9th.domain.mission.exception.code.MissionErrorCode;
 import ssu.cromi.umc9th.domain.mission.repository.MissionRepository;
@@ -80,5 +81,26 @@ public class MissionService {
         Page<Mission> result = missionRepository.findAllByStore(store, pageRequest);
 
         return MissionConverter.toStoreMissionListDTO(result);
+    }
+
+    public MissionResDTO.UserMissionListDTO getUserInProgressMissions(Long userId, Integer page) {
+        // 페이지 유효성 검증 (1 이상)
+        if (page < 1) {
+            throw new GeneralException(GeneralErrorCode.INVALID_PAGE);
+        }
+
+        // 사용자 존재 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException(UserErrorCode.NOT_FOUND));
+
+        // 페이징 처리 (page는 1부터 시작하므로 -1, 한 페이지에 10개씩)
+        PageRequest pageRequest = PageRequest.of(page - 1, 10);
+        Page<UserMission> result = userMissionRepository.findAllByUserAndStatus(
+                user,
+                UserMissionStatus.IN_PROGRESS,
+                pageRequest
+        );
+
+        return MissionConverter.toUserMissionListDTO(result);
     }
 }

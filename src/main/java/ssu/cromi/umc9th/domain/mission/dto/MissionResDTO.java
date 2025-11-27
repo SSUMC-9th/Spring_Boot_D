@@ -39,4 +39,28 @@ public class MissionResDTO {
             LocalDate dueDate,
             MissionStatus status
     ) {}
+
+    @Builder
+    public record UserMissionListDTO(
+            List<UserMissionDTO> missionList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ) {}
+
+    @Builder
+    public record UserMissionDTO(
+            Long userMissionId,
+            Long missionId,
+            String storeName,
+            String title,
+            String content,
+            Long point,
+            LocalDate dueDate,
+            UserMissionStatus status,
+            String location,
+            LocalDateTime createdAt
+    ) {}
 }

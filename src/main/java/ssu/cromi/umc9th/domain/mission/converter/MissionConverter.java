@@ -58,4 +58,35 @@ public class MissionConverter {
                 .status(mission.getStatus())
                 .build();
     }
+
+    // 특정 유저가 진행중인 미션 목록 조회 - Page<UserMission> -> UserMissionListDTO
+    public static MissionResDTO.UserMissionListDTO toUserMissionListDTO(Page<UserMission> result) {
+        return MissionResDTO.UserMissionListDTO.builder()
+                .missionList(result.getContent().stream()
+                        .map(MissionConverter::toUserMissionDTO)
+                        .toList()
+                )
+                .listSize(result.getSize())
+                .totalPage(result.getTotalPages())
+                .totalElements(result.getTotalElements())
+                .isFirst(result.isFirst())
+                .isLast(result.isLast())
+                .build();
+    }
+
+    // UserMission -> UserMissionDTO
+    public static MissionResDTO.UserMissionDTO toUserMissionDTO(UserMission userMission) {
+        return MissionResDTO.UserMissionDTO.builder()
+                .userMissionId(userMission.getId())
+                .missionId(userMission.getMission().getId())
+                .storeName(userMission.getMission().getStore().getStoreName())
+                .title(userMission.getMission().getTitle())
+                .content(userMission.getMission().getContent())
+                .point(userMission.getMission().getPoint())
+                .dueDate(userMission.getMission().getDueDate())
+                .status(userMission.getStatus())
+                .location(userMission.getLocation())
+                .createdAt(userMission.getCreatedAt())
+                .build();
+    }
 }
