@@ -2,6 +2,7 @@ package com.umc9th.peter.domain.review.controller;
 
 import com.umc9th.peter.domain.review.dto.ReviewRequest;
 import com.umc9th.peter.domain.review.dto.ReviewResponse;
+import com.umc9th.peter.global.annotation.PageNumber;
 import com.umc9th.peter.global.api.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,7 +24,7 @@ public interface ReviewControllerDocs {
     public ApiResponse<ReviewResponse.ReviewListDto> getReviews(
             @RequestParam(required = false) Long storeId,
             @RequestParam(required = false) Integer star,
-            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "1") @PageNumber Integer page,
             @RequestParam(defaultValue = "10") Integer limit
     );
 

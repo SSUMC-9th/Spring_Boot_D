@@ -7,6 +7,7 @@ import com.umc9th.peter.global.api.exception.GeneralException;
 import com.umc9th.peter.global.webhook.dto.TextMessage;
 import com.umc9th.peter.global.webhook.service.WebhookService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -41,6 +42,18 @@ public class GeneralExceptionAdvice {
         return ResponseEntity.status(code.getStatus())
                 .body(ApiResponse.onFailure(code, errors));
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleException(ConstraintViolationException e) {
+        Map<String, String> errors = new HashMap<>();
+        e.getConstraintViolations()
+                .forEach(error -> errors.put(error.getPropertyPath().toString(), error.getMessage()));
+
+        GeneralErrorCode code = GeneralErrorCode.VAILD_FAILURE;
+        return ResponseEntity.status(code.getStatus())
+                .body(ApiResponse.onFailure(code, errors));
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<String>> handleException(Exception e, HttpServletRequest request) {

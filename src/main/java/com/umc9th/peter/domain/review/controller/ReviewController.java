@@ -4,13 +4,16 @@ import com.umc9th.peter.domain.review.dto.ReviewRequest;
 import com.umc9th.peter.domain.review.dto.ReviewResponse;
 import com.umc9th.peter.domain.review.exception.code.ReviewSuccessCode;
 import com.umc9th.peter.domain.review.service.ReviewService;
+import com.umc9th.peter.global.annotation.PageNumber;
 import com.umc9th.peter.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("/reviews")
 public class ReviewController implements ReviewControllerDocs {
 
@@ -20,7 +23,7 @@ public class ReviewController implements ReviewControllerDocs {
     public ApiResponse<ReviewResponse.ReviewListDto> getReviews(
             @RequestParam(required = false) Long storeId,
             @RequestParam(required = false) Integer star,
-            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "1") @PageNumber Integer page,
             @RequestParam(defaultValue = "10") Integer limit
     ) {
         // TODO: 인증 기능 구현되면 토큰에서 memberId 파싱해서 사용 (API를 통한 멤버별 리뷰 조회 불가)
