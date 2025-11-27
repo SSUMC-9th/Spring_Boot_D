@@ -39,4 +39,22 @@ public class ReviewResponseDTO
             LocalDate createdAt
     ){}
 
+    @Builder
+    public record MyReviewPreViewListDTO(
+            List<MyReviewPreViewDTO> reviewList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ) {}
+
+    @Builder
+    public record MyReviewPreViewDTO(
+            String storeName,
+            Float score,
+            String body,
+            LocalDate createdAt
+    ) {}
+
 }

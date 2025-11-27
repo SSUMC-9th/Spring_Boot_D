@@ -1,20 +1,55 @@
 package com.example.UMC9th.domain.mission.dto;
 
 import com.example.UMC9th.domain.mission.enums.MissonState;
+import lombok.Builder;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class MissionResDTO {
+    Long missionId;
+    String missionContent;
+    Integer point;
 
-    public record MissionDTO(
+    // 가게 미션 목록
+
+    @Builder
+    public record StoreMissionPreviewDTO(
             Long missionId,
-            String missionContent,
-            Integer point
+            String content,
+            Integer point,
+            LocalDate deadline
     ) {}
 
-    // 유저가 도전 중인 미션의 DTO
-    public record ChallengeDTO(
-            Integer userMissionId,   // UserMission PK (entity 에선 missionId)
-            Long userId,
+    @Builder
+    public record StoreMissionPreviewListDTO(
+            List<StoreMissionPreviewDTO> missionList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ) {}
+
+    // 내가 진행중인 미션 목록
+
+    @Builder
+    public record MyMissionPreviewDTO(
             Long missionId,
-            MissonState missonState
+            String storeName,
+            String content,
+            Integer point,
+            LocalDate deadline,
+            MissonState status   // 진행중 / 완료 등
+    ) {}
+
+    @Builder
+    public record MyMissionPreviewListDTO(
+            List<MyMissionPreviewDTO> missionList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
     ) {}
 }
