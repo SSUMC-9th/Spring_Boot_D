@@ -86,8 +86,30 @@ public class ReviewController{
         return ApiResponse.onSuccess(code, reviews);
     }
 
+    /**
+     * 사용자가 특정 가게에 작성한 리뷰 목록 조회 (페이징 처리)
+     */
     @Operation(
-            summary = "가게의 리뷰 목록 조회 API By Crom(개발중)",
+            summary = "사용자가 특정 가게에 작성한 리뷰 목록 조회 API",
+            description = "특정 사용자가 특정 가게에 작성한 리뷰를 페이징 처리하여 조회. 한 페이지에 10개씩 조회"
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 페이지 번호"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "사용자 또는 가게를 찾을 수 없음")
+    })
+    @GetMapping("/users/{userId}/stores/{storeName}")
+    public ApiResponse<ReviewResDTO.UserReviewListDTO> getUserReviews(
+            @PathVariable Long userId,
+            @PathVariable String storeName,
+            @RequestParam(defaultValue = "1") Integer page
+    ) {
+        ReviewResDTO.UserReviewListDTO response = reviewQueryService.getUserReviews(userId, storeName, page);
+        return ApiResponse.onSuccess(ReviewSuccessCode.FOUND, response);
+    }
+
+    @Operation(
+            summary = "가게의 리뷰 목록 조회 API By Crom",
             description = "특정 가게의 리뷰를 모두 조회. 페이지네이션으로 제공"
     )
     @ApiResponses({

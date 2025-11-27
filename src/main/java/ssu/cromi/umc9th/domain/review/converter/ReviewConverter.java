@@ -10,7 +10,6 @@ import ssu.cromi.umc9th.domain.user.entity.User;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReviewConverter {
     //result -> DTO
@@ -77,6 +76,32 @@ public class ReviewConverter {
                         .store(store)
                         .imageUrl(url)
                         .build())
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+        // 사용자가 작성한 리뷰 목록 조회 - Page<UserReview> -> UserReviewListDTO
+    public static ReviewResDTO.UserReviewListDTO toUserReviewListDTO(Page<UserReview> result) {
+        return ReviewResDTO.UserReviewListDTO.builder()
+                .reviewList(result.getContent().stream()
+                        .map(ReviewConverter::toUserReviewDTO)
+                        .toList()
+                )
+                .listSize(result.getSize())
+                .totalPage(result.getTotalPages())
+                .totalElements(result.getTotalElements())
+                .isFirst(result.isFirst())
+                .isLast(result.isLast())
+                .build();
+    }
+
+    // UserReview -> UserReviewDTO
+    public static ReviewResDTO.UserReviewDTO toUserReviewDTO(UserReview review) {
+        return ReviewResDTO.UserReviewDTO.builder()
+                .reviewId(review.getId())
+                .storeName(review.getStore().getStoreName())
+                .score(review.getScore())
+                .reviewText(review.getReviewText())
+                .createdAt(LocalDate.from(review.getCreatedAt()))
+                .build();
     }
 }

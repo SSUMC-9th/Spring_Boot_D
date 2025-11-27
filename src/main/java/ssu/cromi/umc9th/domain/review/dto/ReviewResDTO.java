@@ -36,4 +36,23 @@ public class ReviewResDTO {
             String body,
             LocalDate createdAt
     ){}
+
+    @Builder
+    public record UserReviewListDTO(
+            List<UserReviewDTO> reviewList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ){}
+
+    @Builder
+    public record UserReviewDTO(
+            Long reviewId,
+            String storeName,
+            Float score,
+            String reviewText,
+            LocalDate createdAt
+    ){}
 }

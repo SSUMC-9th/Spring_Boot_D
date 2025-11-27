@@ -27,4 +27,8 @@ public interface UserReviewRepository extends JpaRepository<UserReview, Long>, U
 
     Page<UserReview> findAllByStore(Store store, PageRequest pageRequest);
 
+    Page<UserReview> findAllByUser(User user, PageRequest pageRequest);
+
+    Page<UserReview> findAllByUserAndStore(User user, Store store, PageRequest pageRequest);
+
 }

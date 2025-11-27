@@ -16,4 +16,10 @@ public interface ReviewQueryService {
             String storeName,
             Integer page
     );
+
+    ReviewResDTO.UserReviewListDTO getUserReviews(
+            Long userId,
+            String storeName,
+            Integer page
+    );
 }
