@@ -1,11 +1,10 @@
 package com.example.UMC9th.domain.review.repository;
 
-import com.example.UMC9th.domain.review.dto.ReviewResponseDTO;
-import com.querydsl.core.types.Predicate;
+import com.example.UMC9th.domain.review.dto.ReviewResDTO;
 
 import java.util.List;
 
 public interface ReviewQueryDsl {
 
-    List<ReviewResponseDTO> searchReviews(Long userId, String storeName, Float rating);
+    List<ReviewResDTO> searchReviews(Long userId, String storeName, Float rating);
 }
