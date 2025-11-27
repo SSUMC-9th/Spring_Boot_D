@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +55,12 @@ public class GeneralExceptionAdvice {
                 .body(ApiResponse.onFailure(code, errors));
     }
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiResponse<String>> handleException(MethodArgumentTypeMismatchException e) {
+        GeneralErrorCode code = GeneralErrorCode.INVAILD_PARAM;
+        return ResponseEntity.status(code.getStatus())
+                .body(ApiResponse.onFailure(code, code.getMessage()));
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<String>> handleException(Exception e, HttpServletRequest request) {
