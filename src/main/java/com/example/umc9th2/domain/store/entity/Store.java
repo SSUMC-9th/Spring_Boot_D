@@ -45,7 +45,7 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
-    // ✅ Location과 다대일 관계 추가 (에러 해결 핵심 부분)
+    // Location과 다대일 관계 추가 (에러 해결 핵심 부분)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", nullable = false)
     private Location location; // FK (하나의 지역에 여러 가게가 속함)

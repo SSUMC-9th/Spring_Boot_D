@@ -58,5 +58,7 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
 
     boolean existsByUserAndMission(User user, Mission mission);
 
+    Page<UserMission> findAllByUser_UserId(Long userId, Pageable pageable);
+
 
 }

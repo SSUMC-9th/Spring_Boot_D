@@ -3,6 +3,7 @@ package com.example.umc9th2.domain.mission.repository;
 import com.example.umc9th2.domain.User.entity.User;
 import com.example.umc9th2.domain.mission.dto.HomeMissionDto;
 import com.example.umc9th2.domain.mission.entity.Mission;
+import com.example.umc9th2.domain.store.entity.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,8 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
             @Param("region") String region,
             Pageable pageable
     );
+
+    Page<Mission> findAllByStore(Store store, Pageable pageable);
 
 
 }
