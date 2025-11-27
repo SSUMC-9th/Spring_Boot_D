@@ -8,6 +8,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import ssu.cromi.umc9th.domain.review.dto.MyReviewResponseDto;
 import ssu.cromi.umc9th.domain.review.dto.ReviewFilterDto;
+import ssu.cromi.umc9th.domain.review.dto.ReviewReqDTO;
+import ssu.cromi.umc9th.domain.review.dto.ReviewResDTO;
+import ssu.cromi.umc9th.domain.review.exception.code.ReviewSuccessCode;
 import ssu.cromi.umc9th.domain.review.service.ReviewService;
 import ssu.cromi.umc9th.global.apiPayload.ApiResponse;
 import ssu.cromi.umc9th.global.apiPayload.code.GeneralSuccessCode;
@@ -18,6 +21,16 @@ import ssu.cromi.umc9th.global.apiPayload.code.GeneralSuccessCode;
 public class ReviewController {
 
     private final ReviewService reviewService;
+
+    /**
+     * 가게에 리뷰 추가
+     */
+    @PostMapping
+    public ApiResponse<ReviewResDTO.CreateDTO> createReview(@RequestBody ReviewReqDTO.CreateDTO request) {
+        ReviewResDTO.CreateDTO response = reviewService.createReview(request);
+
+        return ApiResponse.onSuccess(ReviewSuccessCode.SUCCESS_REVIEWED, response);
+    }
 
     /**
      * 내가 작성한 리뷰 조회

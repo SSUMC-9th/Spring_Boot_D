@@ -1,0 +1,58 @@
+package ssu.cromi.umc9th.domain.mission.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ssu.cromi.umc9th.domain.mission.converter.MissionConverter;
+import ssu.cromi.umc9th.domain.mission.dto.MissionReqDTO;
+import ssu.cromi.umc9th.domain.mission.dto.MissionResDTO;
+import ssu.cromi.umc9th.domain.mission.entity.Mission;
+import ssu.cromi.umc9th.domain.mission.entity.UserMission;
+import ssu.cromi.umc9th.domain.mission.exception.MissionException.MissionException;
+import ssu.cromi.umc9th.domain.mission.exception.code.MissionErrorCode;
+import ssu.cromi.umc9th.domain.mission.repository.MissionRepository;
+import ssu.cromi.umc9th.domain.mission.repository.UserMissionRepository;
+import ssu.cromi.umc9th.domain.user.entity.User;
+import ssu.cromi.umc9th.domain.user.exception.UserException.UserException;
+import ssu.cromi.umc9th.domain.user.exception.code.UserErrorCode;
+import ssu.cromi.umc9th.domain.user.repository.UserRepository;
+
+import java.time.LocalDate;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class MissionService {
+
+    private final UserMissionRepository userMissionRepository;
+    private final MissionRepository missionRepository;
+    private final UserRepository userRepository;
+
+    @Transactional
+    public MissionResDTO.ChallengeDTO challengeMission(Long missionId, MissionReqDTO.ChallengeDTO dto) {
+        // 사용자 존재 확인
+        User user = userRepository.findById(dto.userId())
+                .orElseThrow(() -> new UserException(UserErrorCode.NOT_FOUND));
+
+        // 미션 존재 확인
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new MissionException(MissionErrorCode.NOT_FOUND));
+
+        // 중복 도전 확인
+        if (userMissionRepository.existsActiveUserMission(dto.userId(), missionId)) {
+            throw new MissionException(MissionErrorCode.ALREADY_CHALLENGED);
+        }
+
+        // 미션 만료 확인
+        if (mission.getDueDate().isBefore(LocalDate.now())) {
+            throw new MissionException(MissionErrorCode.MISSION_EXPIRED);
+        }
+
+        // UserMission 생성 및 저장
+        UserMission userMission = MissionConverter.toUserMission(dto, user, mission);
+        userMissionRepository.save(userMission);
+
+        // 응답 DTO 반환
+        return MissionConverter.toChallengeDTO(userMission);
+    }
+}

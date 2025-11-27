@@ -60,8 +60,8 @@ public class UserReviewRepositoryImpl implements UserReviewRepositoryCustom {
     }
 
     // 동적 조건 메서드들
-    private BooleanExpression userIdEq(Long userId) {
-        return userId != null ? userReview.user.id.eq(userId) : null;
+    private BooleanExpression userIdEq(Long uid) {
+        return uid != null ? userReview.user.userId.eq(uid) : null;
     }
 
     private BooleanExpression storeIdEq(Long storeId) {
