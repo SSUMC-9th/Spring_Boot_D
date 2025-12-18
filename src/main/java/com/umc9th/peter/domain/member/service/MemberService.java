@@ -13,9 +13,11 @@ import com.umc9th.peter.domain.member.repository.*;
 import com.umc9th.peter.domain.review.repository.AnswerRepository;
 import com.umc9th.peter.domain.review.repository.ReviewRepository;
 import com.umc9th.peter.domain.store.repository.StoreRepository;
+import com.umc9th.peter.global.auth.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,11 +37,14 @@ public class MemberService {
     private final StoreRepository storeRepository;
     private final FoodCategoryRepository foodCategoryRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Transactional
     public MemberResponse.joinDto signUp(
             MemberRequest.joinDto dto
     ) {
-        Member member = MemberRequest.joinDto.toEntity(dto);
+        String salt = passwordEncoder.encode(dto.password());
+        Member member = MemberRequest.joinDto.toEntity(dto, salt, Role.ROLE_USER);
         memberRepository.save(member);
 
         if (!dto.foodCategory().isEmpty()) {
