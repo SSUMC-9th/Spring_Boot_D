@@ -53,4 +53,10 @@ public class MemberRequest {
 
     }
 
+    public record reissueDto(
+            @NotBlank String refreshToken
+    ) {
+
+    }
+
 }

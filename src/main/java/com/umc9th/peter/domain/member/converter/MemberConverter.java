@@ -26,10 +26,18 @@ public class MemberConverter {
                 .build();
     }
 
-    public static MemberResponse.loginDto toLoginDto(Member member, String accessToken) {
+    public static MemberResponse.loginDto toLoginDto(Member member, String accessToken, String refreshToken) {
         return new MemberResponse.loginDto(
                 member.getId(),
-                accessToken
+                accessToken,
+                refreshToken
+        );
+    }
+
+    public static MemberResponse.reissueDto toReissueDto(String accessToken, String refreshToken) {
+        return new MemberResponse.reissueDto(
+                accessToken,
+                refreshToken
         );
     }
 

@@ -15,6 +15,8 @@ import com.umc9th.peter.domain.member.repository.*;
 import com.umc9th.peter.domain.review.repository.AnswerRepository;
 import com.umc9th.peter.domain.review.repository.ReviewRepository;
 import com.umc9th.peter.domain.store.repository.StoreRepository;
+import com.umc9th.peter.global.api.code.GeneralErrorCode;
+import com.umc9th.peter.global.api.exception.GeneralException;
 import com.umc9th.peter.global.auth.enums.Role;
 import com.umc9th.peter.global.auth.security.CustomUserDetails;
 import com.umc9th.peter.global.auth.security.JwtUtil;
@@ -83,8 +85,26 @@ public class MemberService {
 
         CustomUserDetails userDetails = new CustomUserDetails(member);
         String accessToken = jwtUtil.createAccessToken(userDetails);
+        String refreshToken = jwtUtil.createRefreshToken(userDetails);
 
-        return MemberConverter.toLoginDto(member, accessToken);
+        return MemberConverter.toLoginDto(member, accessToken, refreshToken);
+    }
+
+    @Transactional
+    public MemberResponse.reissueDto reissue(MemberRequest.reissueDto dto) {
+        if (!jwtUtil.isValidRefreshToken(dto.refreshToken())) {
+            throw new GeneralException(GeneralErrorCode.INVALID_TOKEN);
+        }
+
+        String email = jwtUtil.getEmail(dto.refreshToken());
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
+
+        CustomUserDetails userDetails = new CustomUserDetails(member);
+        String accessToken = jwtUtil.createAccessToken(userDetails);
+        String refreshToken = jwtUtil.createRefreshToken(userDetails);
+
+        return MemberConverter.toReissueDto(accessToken, refreshToken);
     }
 
     @Transactional

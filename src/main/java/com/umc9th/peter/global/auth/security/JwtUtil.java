@@ -21,17 +21,24 @@ public class JwtUtil {
 
     private final SecretKey secretKey;
     private final Duration accessTokenExpiration;
+    private final Duration refreshTokenExpiration;
 
     public JwtUtil(
             @Value("${jwt.token.secret-key}") String secret,
-            @Value("${jwt.token.expiration.access}") Long accessTokenExpiration
+            @Value("${jwt.token.expiration.access}") Long accessTokenExpiration,
+            @Value("${jwt.token.expiration.refresh}") Long refreshTokenExpiration
     ) {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.accessTokenExpiration = Duration.ofMillis(accessTokenExpiration);
+        this.refreshTokenExpiration = Duration.ofMillis(refreshTokenExpiration);
     }
 
     public String createAccessToken(CustomUserDetails user) {
-        return createToken(user, accessTokenExpiration);
+        return createToken(user, accessTokenExpiration, "access_token");
+    }
+
+    public String createRefreshToken(CustomUserDetails user) {
+        return createToken(user, refreshTokenExpiration, "refresh_token");
     }
 
     public String getEmail(String token) {
@@ -42,16 +49,25 @@ public class JwtUtil {
         }
     }
 
-    public boolean isValid(String token) {
+    public boolean isValidAccessToken(String token) {
+        return isValidToken(token, "access_token");
+    }
+
+    public boolean isValidRefreshToken(String token) {
+        return isValidToken(token, "refresh_token");
+    }
+
+    private boolean isValidToken(String token, String tokenType) {
         try {
-            getClaims(token);
-            return true;
+            Jws<Claims> claims = getClaims(token);
+            String type = claims.getPayload().get("token_type", String.class);
+            return tokenType.equals(type);
         } catch (JwtException e) {
             return false;
         }
     }
 
-    private String createToken(CustomUserDetails user, Duration expiration) {
+    private String createToken(CustomUserDetails user, Duration expiration, String tokenType) {
         Instant now = Instant.now();
 
         String authorities = user.getAuthorities().stream()
@@ -62,6 +78,7 @@ public class JwtUtil {
                 .subject(user.getUsername())
                 .claim("role", authorities)
                 .claim("email", user.getUsername())
+                .claim("token_type", tokenType)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(expiration)))
                 .signWith(secretKey)

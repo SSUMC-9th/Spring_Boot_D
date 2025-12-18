@@ -23,7 +23,8 @@ jwt:
   token:
     secret-key: ${JWT_SECRET}
     expiration:
-      access: 3600000  # 토큰 만료 시간 (ms 단위)
+      access: 3600000  # access 토큰 만료 시간 (1시간)
+      refresh: 604800000  # refresh 토큰 만료 시간 (7일)
 
 webhook:
   url: ${WEBHOOK_URL:}

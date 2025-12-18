@@ -27,7 +27,15 @@ public class MemberResponse {
 
     public record loginDto(
             Long memberId,
-            String accessToken
+            String accessToken,
+            String refreshToken
+    ) {
+
+    }
+
+    public record reissueDto(
+            String accessToken,
+            String refreshToken
     ) {
 
     }

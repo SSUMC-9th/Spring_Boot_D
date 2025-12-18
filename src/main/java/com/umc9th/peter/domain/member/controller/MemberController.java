@@ -43,6 +43,16 @@ public class MemberController {
         );
     }
 
+    @PostMapping("/reissue")
+    public ApiResponse<MemberResponse.reissueDto> reissue(
+            @RequestBody @Valid MemberRequest.reissueDto dto
+    ) {
+        return ApiResponse.onSuccess(
+                MemberSuccessCode.OK,
+                memberService.reissue(dto)
+        );
+    }
+
     @DeleteMapping("/members/{memberId}")
     public ApiResponse<Void> delete(
             @PathVariable("memberId") Long memberId
