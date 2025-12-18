@@ -25,6 +25,13 @@ public class MemberResponse {
 
     }
 
+    public record loginDto(
+            Long memberId,
+            String accessToken
+    ) {
+
+    }
+
     public record MissionDto(
             Long id,
             MissionResponse.MissionDto mission,

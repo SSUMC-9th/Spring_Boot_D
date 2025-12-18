@@ -19,5 +19,11 @@ spring:
         format_sql: true  # 출력되는 SQL 쿼리를 보기 좋게 포맷팅
         default_batch_fetch_size: 100
 
+jwt:
+  token:
+    secret-key: ${JWT_SECRET}
+    expiration:
+      access: 3600000  # 토큰 만료 시간 (ms 단위)
+
 webhook:
   url: ${WEBHOOK_URL:}

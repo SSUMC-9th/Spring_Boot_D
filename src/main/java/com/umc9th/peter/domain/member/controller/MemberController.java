@@ -33,6 +33,16 @@ public class MemberController {
         );
     }
 
+    @PostMapping("/login")
+    public ApiResponse<MemberResponse.loginDto> login(
+            @RequestBody @Valid MemberRequest.loginDto dto
+    ) {
+        return ApiResponse.onSuccess(
+                MemberSuccessCode.OK,
+                memberService.login(dto)
+        );
+    }
+
     @DeleteMapping("/members/{memberId}")
     public ApiResponse<Void> delete(
             @PathVariable("memberId") Long memberId

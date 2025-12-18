@@ -46,4 +46,11 @@ public class MemberRequest {
 
     }
 
+    public record loginDto(
+            @Email String email,
+            @NotBlank String password
+    ) {
+
+    }
+
 }
