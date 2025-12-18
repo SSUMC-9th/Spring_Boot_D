@@ -4,6 +4,13 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class ReviewRequestDto {
 
@@ -19,4 +26,5 @@ public class ReviewRequestDto {
             @Max(value = 5, message = "최대 평점은 5점입니다.")
             Integer score
     ) {}
+
 }
