@@ -1,9 +1,9 @@
 package ssu.cromi.umc9th.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.cromi.umc9th.domain.food.entity.FoodCategory;
 import ssu.cromi.umc9th.domain.food.entity.UserFood;
 import ssu.cromi.umc9th.domain.food.exception.FoodException.FoodException;
 import ssu.cromi.umc9th.domain.food.exception.code.FoodErrorCode;
@@ -14,8 +14,8 @@ import ssu.cromi.umc9th.domain.user.dto.UserReqDTO;
 import ssu.cromi.umc9th.domain.user.dto.UserResDTO;
 import ssu.cromi.umc9th.domain.user.entity.User;
 import ssu.cromi.umc9th.domain.user.repository.UserRepository;
+import ssu.cromi.umc9th.global.auth.enums.Role;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,14 +26,19 @@ public class UserCommandServiceImpl implements UserCommandService{
     private final FoodRepository foodRepository;
     private final UserFoodRepository userFoodRepository;
 
+    // Password Encoder
+    private final PasswordEncoder passwordEncoder;
+
     //회원가입
     @Override
     @Transactional
     public UserResDTO.JoinDTO signup(
             UserReqDTO.JoinDTO dto
     ) {
+        // 솔트된 비밀번호 생성
+        String salt = passwordEncoder.encode(dto.password());
         //사용자 생성
-        User user = UserConverter.toUser(dto);
+        User user = UserConverter.toUser(dto,salt, Role.ROLE_USER);
         // DB적용
         userRepository.save(user);
 
