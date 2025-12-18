@@ -43,6 +43,7 @@ public class Review {
     private User user;//사용자 하나가 여러 리뷰 작성 가능
 
     @OneToMany(mappedBy = "review")
-    private List<Reply> replies;
+    @Builder.Default
+    private List<Reply> replies = new ArrayList<>();
 
 }

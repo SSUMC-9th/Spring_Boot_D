@@ -17,11 +17,11 @@ public class UserMission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer missionId;
+    private Integer UserMissionId;
 
     @Column(name = "misson_state", nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
-    private MissonState missonState;
+    private MissonState missionState;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)//FK

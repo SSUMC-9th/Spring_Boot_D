@@ -1,4 +1,4 @@
-package com.example.UMC9th.domain.review.exception.code;
+package com.example.UMC9th.domain.store.exception.code;
 
 import com.example.UMC9th.global.apiPayload.code.BaseErrorCode;
 import lombok.Getter;
@@ -7,11 +7,11 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum ReviewErrorCode implements BaseErrorCode {
+public enum StoreErrorCode implements BaseErrorCode{
 
     NOT_FOUND(HttpStatus.NOT_FOUND,
-            "REVIEW404_1",
-            "해당 리뷰를 찾을 수 없습니다."),
+            "STORE404_1",
+            "해당 가게를 찾을 수 없습니다."),
     ;
 
     private final HttpStatus status;
