@@ -10,17 +10,6 @@ import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
 import java.time.LocalDate;
 import java.util.List;
 
-//public class UserReqDTO {
-//
-//    public record JoinDTO(
-//            String name,
-//            Gender gender,
-//            LocalDate birth,
-//            RabbitConnectionDetails.Address address,
-//            String specAddress,
-//            List<Long> preferCategory
-//    ){}
-//}
 public class UserReqDTO {
 
     public record JoinDTO(
@@ -41,4 +30,13 @@ public class UserReqDTO {
             @ExistFoods
             List<Long> preferCategory
     ){}
+
+    // 로그인
+    public record LoginDTO(
+            @NotBlank
+            String email,
+            @NotBlank
+            String password
+    ){}
+
 }

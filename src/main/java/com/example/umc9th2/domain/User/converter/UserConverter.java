@@ -38,4 +38,12 @@ public class UserConverter {
                 .oauthProvider(OauthProvider.LOCAL)
                 .build();
     }
+
+    public static UserResDTO.LoginDTO LoginDTO(User user, String accessToken) {
+        return UserResDTO.LoginDTO.builder()
+                .userId(user.getUserId())
+                .accessToken(accessToken)
+                .build();
+    }
+
 }

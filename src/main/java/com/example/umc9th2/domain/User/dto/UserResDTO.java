@@ -11,4 +11,11 @@ public class UserResDTO {
             Long memberId,
             LocalDateTime createAt
     ){}
+
+    // 로그인
+    @Builder
+    public record LoginDTO(
+            Long userId,
+            String accessToken
+    ){}
 }
