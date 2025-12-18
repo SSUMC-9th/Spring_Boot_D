@@ -3,8 +3,10 @@ package com.umc9th.peter.domain.review.dto;
 import com.umc9th.peter.domain.review.entity.Answer;
 import com.umc9th.peter.domain.review.entity.Review;
 import com.umc9th.peter.domain.store.dto.StoreResponse;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ReviewResponse {
 
@@ -34,6 +36,17 @@ public class ReviewResponse {
             );
         }
 
+    }
+
+    @Builder
+    public record ReviewListDto(
+            List<ReviewDto> reviewList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ) {
     }
 
     public record AnswerDto(

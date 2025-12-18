@@ -7,12 +7,16 @@ import com.umc9th.peter.domain.member.exception.MemberException;
 import com.umc9th.peter.domain.member.exception.code.MemberErrorCode;
 import com.umc9th.peter.domain.member.repository.MemberMissionRepository;
 import com.umc9th.peter.domain.member.repository.MemberRepository;
+import com.umc9th.peter.domain.mission.converter.MissionConverter;
+import com.umc9th.peter.domain.mission.dto.MissionRequest;
 import com.umc9th.peter.domain.mission.dto.MissionResponse;
 import com.umc9th.peter.domain.mission.entity.Mission;
 import com.umc9th.peter.domain.mission.exception.MissionException;
 import com.umc9th.peter.domain.mission.exception.code.MissionErrorCode;
 import com.umc9th.peter.domain.mission.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +30,20 @@ public class MissionService {
     private final MemberRepository memberRepository;
     private final MissionRepository missionRepository;
     private final MemberMissionRepository memberMissionRepository;
+
+    public MissionResponse.MissionListDto getMissions(
+            Long districtId,
+            Long storeId,
+            Integer page,
+            Integer limit
+    ) {
+        MissionRequest.SearchConditionDto condition = new MissionRequest.SearchConditionDto(districtId, storeId);
+        PageRequest pageRequest = PageRequest.of(page - 1, limit);
+
+        Page<Mission> missions = missionRepository.searchMissionsByConditions(condition, pageRequest);
+
+        return MissionConverter.toMissionListDto(missions);
+    }
 
     public MissionResponse.AcceptDto acceptMission(
             Long memberId,

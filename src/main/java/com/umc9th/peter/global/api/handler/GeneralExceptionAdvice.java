@@ -7,11 +7,13 @@ import com.umc9th.peter.global.api.exception.GeneralException;
 import com.umc9th.peter.global.webhook.dto.TextMessage;
 import com.umc9th.peter.global.webhook.service.WebhookService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +42,24 @@ public class GeneralExceptionAdvice {
         GeneralErrorCode code = GeneralErrorCode.VAILD_FAILURE;
         return ResponseEntity.status(code.getStatus())
                 .body(ApiResponse.onFailure(code, errors));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleException(ConstraintViolationException e) {
+        Map<String, String> errors = new HashMap<>();
+        e.getConstraintViolations()
+                .forEach(error -> errors.put(error.getPropertyPath().toString(), error.getMessage()));
+
+        GeneralErrorCode code = GeneralErrorCode.VAILD_FAILURE;
+        return ResponseEntity.status(code.getStatus())
+                .body(ApiResponse.onFailure(code, errors));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiResponse<String>> handleException(MethodArgumentTypeMismatchException e) {
+        GeneralErrorCode code = GeneralErrorCode.INVAILD_PARAM;
+        return ResponseEntity.status(code.getStatus())
+                .body(ApiResponse.onFailure(code, code.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

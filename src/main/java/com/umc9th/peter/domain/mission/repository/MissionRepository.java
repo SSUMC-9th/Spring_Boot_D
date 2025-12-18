@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 
 @Repository
-public interface MissionRepository extends JpaRepository<Mission, Long> {
+public interface MissionRepository extends JpaRepository<Mission, Long>, MissionQueryDsl {
 
     @Query("SELECT DISTINCT m FROM Mission m " +
             "JOIN m.missionDistrictList md " +

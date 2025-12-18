@@ -1,9 +1,12 @@
 package com.umc9th.peter.domain.member.service;
 
+import com.umc9th.peter.domain.member.converter.MemberConverter;
 import com.umc9th.peter.domain.member.dto.MemberRequest;
 import com.umc9th.peter.domain.member.dto.MemberResponse;
 import com.umc9th.peter.domain.member.entity.Member;
 import com.umc9th.peter.domain.member.entity.mapping.MemberFoodCategory;
+import com.umc9th.peter.domain.member.entity.mapping.MemberMission;
+import com.umc9th.peter.domain.member.enums.MissionStatus;
 import com.umc9th.peter.domain.member.exception.FoodException;
 import com.umc9th.peter.domain.member.exception.code.FoodErrorCode;
 import com.umc9th.peter.domain.member.repository.*;
@@ -11,6 +14,8 @@ import com.umc9th.peter.domain.review.repository.AnswerRepository;
 import com.umc9th.peter.domain.review.repository.ReviewRepository;
 import com.umc9th.peter.domain.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,4 +74,18 @@ public class MemberService {
         memberRepository.deleteById(memberId);
     }
 
+    public MemberResponse.MissionListDto getMissions(
+            Long memberId,
+            MissionStatus status,
+            Integer page,
+            Integer limit
+    ) {
+        PageRequest pageRequest = PageRequest.of(page - 1, limit);
+
+        Page<MemberMission> memberMissions = (status == null ?
+                memberMissionRepository.findByMemberId(memberId, pageRequest) :
+                memberMissionRepository.findByMemberIdAndStatus(memberId, status, pageRequest));
+
+        return MemberConverter.toMissionListDto(memberMissions);
+    }
 }

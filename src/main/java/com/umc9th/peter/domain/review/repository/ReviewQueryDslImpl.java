@@ -6,9 +6,13 @@ import com.umc9th.peter.domain.review.dto.ReviewRequest;
 import com.umc9th.peter.domain.review.entity.QReview;
 import com.umc9th.peter.domain.review.entity.Review;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,7 +23,10 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
     private final QReview review = QReview.review;
 
     @Override
-    public List<Review> searchReviewsByConditions(ReviewRequest.SearchConditionDto conditions) {
+    public Page<Review> searchReviewsByConditions(
+            ReviewRequest.SearchConditionDto conditions,
+            Pageable pageable
+    ) {
 
         BooleanBuilder builder = new BooleanBuilder();
         if (conditions.memberId() != null) {
@@ -32,13 +39,24 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
             builder.and(review.star.eq(conditions.star()));
         }
 
-        return queryFactory
+        List<Review> reviews = queryFactory
                 .selectFrom(review)
                 .leftJoin(review.author).fetchJoin()
                 .leftJoin(review.store).fetchJoin()
                 .leftJoin(review.answer).fetchJoin()
                 .where(builder)
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
                 .fetch();
+
+        long count = Optional.ofNullable(queryFactory
+                        .select(review.count())
+                        .from(review)
+                        .where(builder)
+                        .fetchOne())
+                .orElse(0L);
+
+        return new PageImpl<>(reviews, pageable, count);
     }
 
 }
