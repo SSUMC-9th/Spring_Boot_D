@@ -2,6 +2,7 @@ package com.example.umc9th2.domain.User.dto;
 
 import com.example.umc9th2.domain.User.enums.Gender;
 import com.example.umc9th2.global.annotation.ExistFoods;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
@@ -25,6 +26,10 @@ public class UserReqDTO {
     public record JoinDTO(
             @NotBlank
             String name,
+            @Email
+            String email, // 추가된 속성
+            @NotBlank
+            String password, // 추가된 속성
             @NotNull
             Gender gender,
             @NotNull

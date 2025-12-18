@@ -5,6 +5,7 @@ import com.example.umc9th2.domain.User.entity.mapping.UserMission;
 import com.example.umc9th2.domain.User.entity.mapping.UserTerm;
 import com.example.umc9th2.domain.User.enums.Gender;
 import com.example.umc9th2.domain.User.enums.OauthProvider;
+import com.example.umc9th2.global.auth.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -43,6 +44,12 @@ public class User {
 
     @Column(name = "email", nullable = false, length = 100, unique = true)
     private String email;//이메일
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Enumerated(EnumType.STRING)//소셜로그인
     @Column(name = "oauthprovider", nullable = false, length = 20)
