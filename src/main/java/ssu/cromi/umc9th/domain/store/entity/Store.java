@@ -9,7 +9,7 @@ import ssu.cromi.umc9th.global.entity.BaseEntity;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "store_table")
+@Table(name = "store")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

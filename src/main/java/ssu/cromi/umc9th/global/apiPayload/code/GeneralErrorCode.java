@@ -24,7 +24,10 @@ public enum GeneralErrorCode implements BaseErrorCode{
             "예기치 않은 서버 에러가 발생했습니다."),
     VALID_FAIL(HttpStatus.NOT_ACCEPTABLE,
             "COMMON400_2",
-            "인증에 실패했습니다");
+            "인증에 실패했습니다"),
+    INVALID_PAGE(HttpStatus.BAD_REQUEST,
+            "COMMON400_3",
+            "페이지 번호는 1 이상이어야 합니다.");
     private final HttpStatus status;
     private final String code;
     private final String message;
