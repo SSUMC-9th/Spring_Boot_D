@@ -6,6 +6,8 @@ import org.springframework.data.repository.query.Param;
 import ssu.cromi.umc9th.domain.user.entity.User;
 import ssu.cromi.umc9th.domain.user.dto.UserProfileDto;
 
+import java.util.Optional;
+
 public interface UserRepository extends JpaRepository<User, Long> {
     // 이메일 조회 시 fetch join 추가
     @Query("""
@@ -13,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         FROM User u
         WHERE u.email = :email
         """)
-    User findByEmail(@Param("email") String email);
+    Optional<User> findByEmail(@Param("email") String email);
 
     @Query("""
         SELECT new ssu.cromi.umc9th.domain.user.dto.UserProfileDto(

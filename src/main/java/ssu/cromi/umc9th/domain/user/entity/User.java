@@ -10,6 +10,7 @@ import ssu.cromi.umc9th.domain.review.entity.ReviewPictures;
 import ssu.cromi.umc9th.domain.review.entity.UserReview;
 import ssu.cromi.umc9th.domain.user.enums.Gender;
 import ssu.cromi.umc9th.domain.user.enums.UserStatus;
+import ssu.cromi.umc9th.global.auth.enums.Role;
 import ssu.cromi.umc9th.global.entity.BaseEntity;
 
 import java.time.LocalDate;
@@ -45,6 +46,12 @@ public class User extends BaseEntity {
 
     @Column(nullable = true, length = 255, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(nullable = true, length = 255)
     private String phone;
