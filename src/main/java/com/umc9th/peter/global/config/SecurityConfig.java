@@ -1,6 +1,7 @@
 package com.umc9th.peter.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.umc9th.peter.global.auth.filter.AuthenticationEntryPointImpl;
 import com.umc9th.peter.global.auth.filter.JwtAuthFilter;
 import com.umc9th.peter.global.auth.security.JwtUtil;
 import com.umc9th.peter.global.auth.service.CustomUserDetailsService;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -49,13 +51,19 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
-                );
+                )
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint()));
         return http.build();
     }
 
     @Bean
     public JwtAuthFilter jwtAuthFilter() {
-        return new JwtAuthFilter(jwtUtil, customUserDetailsService, objectMapper);
+        return new JwtAuthFilter(jwtUtil, customUserDetailsService);
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new AuthenticationEntryPointImpl(objectMapper);
     }
 
     @Bean
