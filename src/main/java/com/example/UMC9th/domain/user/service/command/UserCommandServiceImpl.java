@@ -12,7 +12,9 @@ import com.example.UMC9th.domain.user.repository.UserRepository;
 import com.example.UMC9th.domain.user.repository.FoodRepository;
 import com.example.UMC9th.domain.user.repository.UserFoodRepository;
 
+import com.example.UMC9th.global.auth.enums.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final UserRepository userRepository;
     private final UserFoodRepository userFoodRepository;
     private final FoodRepository foodRepository;
+    private final PassworddEncoder passwordEncoder;
 
     //회원가입
     @Override
@@ -35,7 +38,10 @@ public class UserCommandServiceImpl implements UserCommandService {
             UserReqDTO.JoinDTO dto
     ){
         // 사용자 생성
-        User user = UserConverter.toUser(dto);
+        String salt = passwordEncoder.encode(dto.password());
+
+        User user = UserConverter.toUser(dto, salt, Role.ROLE_USER);
+
         // DB 적용
         userRepository.save(user);
 
