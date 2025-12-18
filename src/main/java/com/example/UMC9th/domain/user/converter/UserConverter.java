@@ -21,6 +21,9 @@ public class UserConverter {
     ){
         return User.builder()
                 .name(dto.name())
+                .email(dto.email())
+                .password(password)
+                .role(role)
                 .birth(dto.birth().toString())
                 .address(dto.address())
                 .detailAddress(dto.specAddress())

@@ -7,6 +7,7 @@ import com.example.UMC9th.domain.user.enums.Gender;
 import com.example.UMC9th.domain.store.enums.Address;
 import com.example.UMC9th.global.auth.enums.SocialType;
 import com.example.UMC9th.global.auth.entity.BaseEntity;
+import com.example.UMC9th.global.auth.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -69,6 +70,14 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 
     //연관관계
