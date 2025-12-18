@@ -27,7 +27,7 @@ public class FoodCategoryExistValidator implements ConstraintValidator<ExistFood
             context.buildConstraintViolationWithTemplate(FoodErrorCode.NOT_FOUND.getMessage()).addConstraintViolation();
         }
 
-        return false;
+        return valid;
     }
 
 }
