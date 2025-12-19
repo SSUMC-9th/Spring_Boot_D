@@ -13,6 +13,8 @@ import lombok.*;
 @Builder
 public class UserMission {
 
+    //미션 진행중, 완료 상태, 진행전인 것도 함께 넘겨줘야 함
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberMissionId;//PK

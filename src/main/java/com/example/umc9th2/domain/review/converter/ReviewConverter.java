@@ -43,7 +43,7 @@ public class ReviewConverter {
         ReviewResponseDto.ReviewPreViewDTO previewDTO = null;
 
         if (!result.getContent().isEmpty()) {
-            // 첫 번째 요소만 DTO로 변환
+            // 첫 번째 요소만 DTO로 변환(전체 반환하게 다시)
             previewDTO = toReviewPreviewDTO(result.getContent().get(0));
         }
 

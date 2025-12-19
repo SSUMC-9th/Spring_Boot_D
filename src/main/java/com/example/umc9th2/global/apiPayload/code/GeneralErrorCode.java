@@ -18,6 +18,7 @@ public enum GeneralErrorCode implements BaseErrorCode{
             "예기치 않은 서버 에러가 발생했습니다."),
     ;
 
+
 //    BAD_REQUEST(HttpStatus.BAD_REQUEST,
 //            "COMMON400_1",
 //            "잘못된 요청입니다."),

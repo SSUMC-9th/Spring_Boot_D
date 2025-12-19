@@ -20,6 +20,7 @@ public class MissionController implements MissionControllerDocs {
     private final MissionQueryService missionQueryService;
 
     //특정 가게 미션 목록 조회
+    //api/missions에 특정 가게 미션 목록 조회가 맞는 url인지 다시 생각해보기 직관적이지 않은듯
     @GetMapping
     @Override
     public ApiResponse<MissionResponseDto.MissionListDTO> getStoreMissions(

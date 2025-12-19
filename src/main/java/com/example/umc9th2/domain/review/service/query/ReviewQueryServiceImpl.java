@@ -24,7 +24,7 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
 
     private static final int PAGE_SIZE = 10;
 
-    @Override
+    @Override//(워크북-실습예제 페이징 -1 안 해줌 수정)
     public ReviewResponseDto.ReviewPreViewListDTO findReview(String storeName, Integer page) {
 
         // 가게 검색 + 예외 발생시 처리
@@ -50,6 +50,7 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
     //내가 작성한 리뷰 조회
     //page는 1이상 0, 음수 고려 x
     //사용자의 모든 리뷰를 가져오고 컨버터로 dto변환
+    //findbyuser_userid->findByAllByUser로 이름 수정
     @Override
     public ReviewResponseDto.ReviewPreViewListDTO getMyReviews(Long userId, Integer page) {
 
