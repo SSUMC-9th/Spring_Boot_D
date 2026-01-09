@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/members")
+@RequestMapping()
 public class MemberController {
 
     private final MemberService memberService;
@@ -33,7 +33,27 @@ public class MemberController {
         );
     }
 
-    @DeleteMapping("/{memberId}")
+    @PostMapping("/login")
+    public ApiResponse<MemberResponse.loginDto> login(
+            @RequestBody @Valid MemberRequest.loginDto dto
+    ) {
+        return ApiResponse.onSuccess(
+                MemberSuccessCode.OK,
+                memberService.login(dto)
+        );
+    }
+
+    @PostMapping("/reissue")
+    public ApiResponse<MemberResponse.reissueDto> reissue(
+            @RequestBody @Valid MemberRequest.reissueDto dto
+    ) {
+        return ApiResponse.onSuccess(
+                MemberSuccessCode.OK,
+                memberService.reissue(dto)
+        );
+    }
+
+    @DeleteMapping("/members/{memberId}")
     public ApiResponse<Void> delete(
             @PathVariable("memberId") Long memberId
     ) {
@@ -46,7 +66,7 @@ public class MemberController {
         );
     }
 
-    @GetMapping("/missions")
+    @GetMapping("/members/missions")
     public ResponseEntity<ApiResponse<MemberResponse.MissionListDto>> getMemberMissions(
             @RequestParam(required = false) MissionStatus status,
             @RequestParam(defaultValue = "1") @PageNumber Integer page,

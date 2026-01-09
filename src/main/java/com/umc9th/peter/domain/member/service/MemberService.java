@@ -8,14 +8,22 @@ import com.umc9th.peter.domain.member.entity.mapping.MemberFoodCategory;
 import com.umc9th.peter.domain.member.entity.mapping.MemberMission;
 import com.umc9th.peter.domain.member.enums.MissionStatus;
 import com.umc9th.peter.domain.member.exception.FoodException;
+import com.umc9th.peter.domain.member.exception.MemberException;
 import com.umc9th.peter.domain.member.exception.code.FoodErrorCode;
+import com.umc9th.peter.domain.member.exception.code.MemberErrorCode;
 import com.umc9th.peter.domain.member.repository.*;
 import com.umc9th.peter.domain.review.repository.AnswerRepository;
 import com.umc9th.peter.domain.review.repository.ReviewRepository;
 import com.umc9th.peter.domain.store.repository.StoreRepository;
+import com.umc9th.peter.global.api.code.GeneralErrorCode;
+import com.umc9th.peter.global.api.exception.GeneralException;
+import com.umc9th.peter.global.auth.enums.Role;
+import com.umc9th.peter.global.auth.security.CustomUserDetails;
+import com.umc9th.peter.global.auth.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,11 +43,15 @@ public class MemberService {
     private final StoreRepository storeRepository;
     private final FoodCategoryRepository foodCategoryRepository;
 
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+
     @Transactional
     public MemberResponse.joinDto signUp(
             MemberRequest.joinDto dto
     ) {
-        Member member = MemberRequest.joinDto.toEntity(dto);
+        String salt = passwordEncoder.encode(dto.password());
+        Member member = MemberRequest.joinDto.toEntity(dto, salt, Role.ROLE_USER);
         memberRepository.save(member);
 
         if (!dto.foodCategory().isEmpty()) {
@@ -58,6 +70,41 @@ public class MemberService {
         }
 
         return MemberResponse.joinDto.fromEntity(member);
+    }
+
+    @Transactional
+    public MemberResponse.loginDto login(
+            MemberRequest.loginDto dto
+    ) {
+        Member member = memberRepository.findByEmail(dto.email())
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
+
+        if (!passwordEncoder.matches(dto.password(), member.getPassword())) {
+            throw new MemberException(MemberErrorCode.INVALID);
+        }
+
+        CustomUserDetails userDetails = new CustomUserDetails(member);
+        String accessToken = jwtUtil.createAccessToken(userDetails);
+        String refreshToken = jwtUtil.createRefreshToken(userDetails);
+
+        return MemberConverter.toLoginDto(member, accessToken, refreshToken);
+    }
+
+    @Transactional
+    public MemberResponse.reissueDto reissue(MemberRequest.reissueDto dto) {
+        if (!jwtUtil.isValidRefreshToken(dto.refreshToken())) {
+            throw new GeneralException(GeneralErrorCode.INVALID_TOKEN);
+        }
+
+        String email = jwtUtil.getEmail(dto.refreshToken());
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
+
+        CustomUserDetails userDetails = new CustomUserDetails(member);
+        String accessToken = jwtUtil.createAccessToken(userDetails);
+        String refreshToken = jwtUtil.createRefreshToken(userDetails);
+
+        return MemberConverter.toReissueDto(accessToken, refreshToken);
     }
 
     @Transactional
@@ -88,4 +135,5 @@ public class MemberService {
 
         return MemberConverter.toMissionListDto(memberMissions);
     }
+
 }

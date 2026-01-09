@@ -8,6 +8,7 @@ import com.umc9th.peter.domain.member.enums.AccountStatus;
 import com.umc9th.peter.domain.member.enums.AccountType;
 import com.umc9th.peter.domain.member.enums.Gender;
 import com.umc9th.peter.domain.review.entity.Review;
+import com.umc9th.peter.global.auth.enums.Role;
 import com.umc9th.peter.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,6 +34,16 @@ public class Member extends BaseEntity {
 
     @Column(name = "nickname", length = 16, nullable = false)
     private String nickname;
+
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)

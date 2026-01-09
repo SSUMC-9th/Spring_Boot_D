@@ -11,6 +11,8 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
+    Optional<Member> findByEmail(String email);
+
     // 홈 화면 (상단부) 쿼리
     @Query("SELECT m FROM Member m " +
             "LEFT JOIN FETCH m.memberDistrictList md " +
